@@ -4,6 +4,7 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 
 
 ![](images/screenshot.png?raw=true)
+<img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/screenshot.png" align="center" width="50%">
 
 
 >CHAOS ENGINEERING IS:
