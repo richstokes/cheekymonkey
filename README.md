@@ -2,6 +2,10 @@
 
 Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.   
 
+
+![](images/screenshot.png?raw=true)
+
+
 >CHAOS ENGINEERING IS:
 >"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."
 
