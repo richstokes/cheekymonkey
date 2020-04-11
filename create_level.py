@@ -18,14 +18,20 @@ from k8s_kill_pod import count_pods
 
 def create_floor(space, sprite_list):
     """ Create a bunch of blocks for the floor. """
-    for x in range(-1200, 2200, constants.SPRITE_SIZE):
+    for x in range(-2400, 4400, constants.SPRITE_SIZE): # Layer of grass
         y = constants.SPRITE_SIZE / 2
         sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
 
-    for x in range(-1200, 2200, constants.SPRITE_SIZE):
+    for x in range(-2400, 4400, constants.SPRITE_SIZE): # First layer of dirt
         y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
+        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
+        sprite_list.append(sprite)
+        space.add(sprite.body, sprite.shape)
+
+    for x in range(-2400, 4400, constants.SPRITE_SIZE): # Extra layer of dirt
+        y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)

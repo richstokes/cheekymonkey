@@ -424,7 +424,7 @@ class MyGame(arcade.Window):
     def grab(self):
         """ Grab something """
         # See if we have a physics object to our right
-        check_point = (self.player.right + 10, self.player.center_y)
+        check_point = (self.player.right + 40, self.player.center_y)
         shape_list = self.space.point_query(check_point, 1, pymunk.ShapeFilter())
 
         # Create a joint for an item to our right
