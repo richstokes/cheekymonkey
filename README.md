@@ -2,6 +2,8 @@
 
 Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.   
 
+&nbsp;
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/screenshot.png" width="75%">
 </p>
