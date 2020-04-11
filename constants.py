@@ -9,8 +9,11 @@ CONTAINER_HEALTH = 4
 # Will create (Actual number of running pods * CONTAINER_FACTOR) crates in game. Each crate represents one pod
 CONTAINER_FACTOR = 0.4
 
+# How many containers to spawn in offline mode
+OFFLINE_CRATE_COUNT = 20
+
 # Default friction used for sprites, unless otherwise specified
-DEFAULT_FRICTION = 0.2
+DEFAULT_FRICTION = 0.4
 
 # Default mass used for sprites
 DEFAULT_MASS = 1.2
@@ -19,8 +22,8 @@ DEFAULT_MASS = 1.2
 GRAVITY = (0.0, -900.0)
 
 # Player forces
-PLAYER_FRICTION = 10
-PLAYER_MOVE_FORCE = 700 # was 700
+PLAYER_FRICTION = 0.5
+PLAYER_MOVE_FORCE = 700
 PLAYER_JUMP_IMPULSE = 600
 PLAYER_PUNCH_IMPULSE = 1000
 
@@ -28,7 +31,7 @@ PLAYER_PUNCH_IMPULSE = 1000
 SPRITE_SIZE = 64
 
 # How close we get to the edge before scrolling
-VIEWPORT_MARGIN = 120
+VIEWPORT_MARGIN = 100
 
 # Player textures
 TEXTURE_LEFT = 0

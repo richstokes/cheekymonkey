@@ -1,4 +1,5 @@
 import arcade
+import logging
 from constants import (
     DEFAULT_FRICTION,
     PLAYER_FRICTION,
@@ -29,7 +30,7 @@ class Player(arcade.Sprite):
                  filename,
                  center_x=0,
                  center_y=0,
-                 scale=1,
+                 scale=SPRITE_SCALING,
                  mass=DEFAULT_MASS * 2,
                  moment=None,
                  friction=PLAYER_FRICTION, # seeing if its better to use non-default value
@@ -45,42 +46,51 @@ class Player(arcade.Sprite):
         self.body = pymunk.Body(mass, moment, body_type=body_type)
         self.body.position = pymunk.Vec2d(center_x, center_y)
 
-        self.shape = pymunk.Poly.create_box(self.body, (width, height))
+        self.shape = pymunk.Poly.create_box(self.body, (width * 0.90, height * 0.90,), radius=0.8)
         self.shape.friction = friction
         self.shape.HITCOUNT = -100
-        self.shape.name = "Player"        
+        self.shape.name = "Player"
         self.punching = False
 
+        self.set_hit_box([[-22, -60], [22, -60], [22, 50], [-22, 50]]) 
+        # self._collision_radius = 0.5
+
         # Load in monkey textures
-        self.textures = []
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png", mirrored=True)
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png", mirrored=True)
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_faceforward.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png", mirrored=True)
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup_happy.png")
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png", mirrored=True)
-        self.textures.append(texture)
-        texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png")
-        self.textures.append(texture)
+        try:
+            self.textures = []
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png", mirrored=True)
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png", mirrored=True)
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_faceforward.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png", mirrored=True)
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup_happy.png")
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png", mirrored=True)
+            self.textures.append(texture)
+            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png")
+            self.textures.append(texture)
+        except:
+            logging.error("Unable to load textures")
+            quit(1)
 
         self.scale = SPRITE_SCALING
 
-
     def update(self, FRAME_COUNT):
         ''' Updates player animations '''
+        
+        # print(self.center_y)
+        # print(self.shape.c)
         # print(self.shape.friction)
         # If punching
         if self.punching == True and self.body.velocity[0] < 0:

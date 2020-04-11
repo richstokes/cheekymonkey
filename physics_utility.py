@@ -2,6 +2,7 @@ import arcade
 from constants import (
     DEFAULT_FRICTION,
     DEFAULT_MASS,
+    SPRITE_SCALING
 )
 
 import pymunk
@@ -37,6 +38,7 @@ class PymunkSprite(arcade.Sprite):
         self.shape.friction = friction
         self.shape.HITCOUNT = 0
         self.shape.name = "Pymunk"
+        self.scale = SPRITE_SCALING
 
 def check_grounding(player):
     """ See if the player is on the ground. Used to see if we can jump. """

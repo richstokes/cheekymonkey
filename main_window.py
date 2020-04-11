@@ -1,6 +1,7 @@
 import timeit
 import os
 import arcade
+from pyglet.gl import GL_NEAREST
 import pymunk
 import logging
 import math
@@ -61,7 +62,11 @@ class MyGame(arcade.Window):
         # Lists of sprites
         self.dynamic_sprite_list = arcade.SpriteList[PymunkSprite]()
         self.static_sprite_list = arcade.SpriteList()
+        self.static_sprite_list.is_static = True
         self.bg_sprite_list = arcade.SpriteList()
+        self.bg_sprite_list.is_static = True
+        self.fg_sprite_list = arcade.SpriteList()
+        self.fg_sprite_list.is_static = True
 
         # Used for dragging shapes around with the mouse
         self.shape_being_dragged = None
@@ -94,38 +99,47 @@ class MyGame(arcade.Window):
         self.down_pressed = False
         self.is_jumping = False
 
-        # Build the level
-        create_level_1(self.space, self.static_sprite_list, self.dynamic_sprite_list, self.bg_sprite_list)
-
     def setup(self):
         """ Set up the game and initialize the variables. """
+        # Build the level
+        create_level_1(self.space, self.static_sprite_list, self.dynamic_sprite_list, self.bg_sprite_list, self.fg_sprite_list)
+
         # Set up the player
         x = 50
-        y = (SPRITE_SIZE + SPRITE_SIZE / 2)
+        y = (SCREEN_HEIGHT / 2)
         # self.player = Player("./images/tiles/grassMid.png", x, y, scale=0.5, moment=pymunk.inf, mass=1)
-        self.player = Player("./images/Char_Monkey_Free_Images/Animations/monkey_idle.png", x, y, scale=0.42, moment=pymunk.inf, mass=1)
-        self.player.center_x = SCREEN_WIDTH / 2
-        self.player.center_y = SCREEN_HEIGHT / 2
+        self.player = Player("./images/Char_Monkey_Free_Images/Animations/monkey_idle.png", x, y, scale=0.5, moment=pymunk.inf, mass=1)
+        # self.player.center_x = SCREEN_WIDTH / 2
+        # self.player.center_y = SCREEN_HEIGHT / 2
         self.dynamic_sprite_list.append(self.player)
         self.space.add(self.player.body, self.player.shape)
         # logging.info("Number of dynamic sprites created: %s", len(self.dynamic_sprite_list))
 
+        # Load sounds
+        self.jump_sound = arcade.load_sound("./sounds/jump3.wav")
+        self.punch_sound = arcade.load_sound("./sounds/woodhit.wav")
+        self.explode_sound = arcade.load_sound("./sounds/432668__dxeyes__crate-break-4.wav")
+        
+
     def on_draw(self):
         """ Render the screen. """
         self.frame_count += 1
-
         # This command has to happen before we start drawing
         arcade.start_render()
+
+        # self.player.draw_hit_box(arcade.color.RED, 3) # Draw hitboxes for debugging
+
         # print("Number of dynamic sprites present:", len(self.dynamic_sprite_list))
 
         # Start timing how long this takes
         draw_start_time = timeit.default_timer()
 
         # Draw all the sprites
-        self.static_sprite_list.draw()
-        self.bg_sprite_list.draw()
-        self.dynamic_sprite_list.draw()
+        self.bg_sprite_list.draw(filter=GL_NEAREST)
+        self.static_sprite_list.draw(filter=GL_NEAREST)
+        self.dynamic_sprite_list.draw(filter=GL_NEAREST)
         self.ball_sprite_list.draw()
+        self.fg_sprite_list.draw(filter=GL_NEAREST)
 
         # Once per split second
         if self.frame_count % 20 == 0:
@@ -245,18 +259,29 @@ class MyGame(arcade.Window):
 
         # Keep track of how long this function takes.
         start_time = timeit.default_timer()
-
+        # print(self.player.scale)
+        
         # print(self.player.body.position)
         # # Print key states for debugging
         # logging.info("Left: %s", self.left_pressed)
         # logging.info("Right: %s", self.right_pressed)
         # logging.info("Up: %s", self.up_pressed)
-
+        
+        # self.player.center_y = self.player.center_y + 6
+        
         # # Debug grounding
         # grounding = check_grounding(self.player) # find out if player is standing on ground
         # if grounding['body'] is not None:
         #     logging.info("Grounding: %s", grounding['normal'].x / grounding['normal'].y)
         # logging.info("Player friction: %s", self.player.shape.friction)
+
+        # See if the player is standing on an item.
+        # If she is, apply opposite force to the item below her.
+        # So if she moves left, the box below her will have
+        # a force to move to the right.
+        grounding = check_grounding(self.player)
+        if self.force[0] and grounding and grounding['body']:
+            grounding['body'].apply_force_at_world_point((-self.force[0], 0), grounding['position'])
 
         # Apply force to monkey if direction keys pressed
         if self.up_pressed:
@@ -265,11 +290,14 @@ class MyGame(arcade.Window):
                 grounding['normal'].x / grounding['normal'].y) <= self.player.shape.friction and self.player.body.velocity[1] < 1:
                 # She is! Go ahead and jump
                 self.player.body.apply_impulse_at_local_point((0, PLAYER_JUMP_IMPULSE))
+                arcade.play_sound(self.jump_sound)
             # else:
             #     # print("Not on ground, cant jump")
             #     pass
         elif self.down_pressed and not self.up_pressed:
             # logging.info("Pressed down, not currently doing anything")
+            # self.force = (0, 0)
+            # self.player.shape.friction = PLAYER_FRICTION * 10 # act as a brake?
             pass
         if self.left_pressed and not self.right_pressed:
             # Add force to the player, and set the player friction to zero
@@ -282,26 +310,17 @@ class MyGame(arcade.Window):
         if not self.right_pressed and not self.left_pressed and not self.up_pressed:
             #If no directions pressed, stop player
             self.force = (0, 0)
-            self.player.shape.friction = PLAYER_FRICTION #was 15
+            self.player.shape.friction = PLAYER_FRICTION * 15 # Greatly increase friction so player stops instead of sliding
+
+        # print(self.force, self.player.shape.friction, self.player.body.velocity) # Debug physics
 
         # If we have force to apply to the player (from hitting the arrow
         # keys), apply it.
         self.player.body.apply_force_at_local_point(self.force, (0, 0))
-
+        
         # Update player sprites    
         self.player.update(self.frame_count) # Pass in frame_count so we can decide which frame of animation to use
         
-        # check_collision(self.player)
-        # print(self.player.position)
-
-        # See if the player is standing on an item.
-        # If she is, apply opposite force to the item below her.
-        # So if she moves left, the box below her will have
-        # a force to move to the right.
-        grounding = check_grounding(self.player)
-        if self.force[0] and grounding and grounding['body']:
-            grounding['body'].apply_force_at_world_point((-self.force[0], 0), grounding['position'])
-
         # Check sprites
         for sprite in self.dynamic_sprite_list:
             if sprite.shape.body.position.y < 0: # Check for sprites that fall off the screen.
@@ -309,15 +328,16 @@ class MyGame(arcade.Window):
                 self.space.remove(sprite.shape, sprite.shape.body)
                 # Remove sprites from physics list
                 sprite.remove_from_sprite_lists()
-            if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH / 2: # Change texture if 50% damaged
+            if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH / 2: # Change texture of crate if 50% damaged
                 broken_texture = arcade.load_texture("./images/tiles/boxCrate_single.png")
                 sprite.texture = broken_texture
                 # print("Damanged crate")
             # if sprite.shape.name:
             #     print(sprite.shape.name)
-            if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH: # Destroy container if hit 3 times
+            if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH: # Destroy container if hit CONTAINER_HEALTH times
                 # logging.info("Destroying shape %s", sprite.shape)
                 sprite.remove_from_sprite_lists()
+                arcade.play_sound(self.explode_sound)
                 # Kill random pod!
                 delete_thread = threading.Thread(target=self.kill_pod)
                 delete_thread.start()
@@ -358,24 +378,27 @@ class MyGame(arcade.Window):
 
     def kill_pod(self):
         ''' Deletes pod on kubernetes, then removes crate sprite from game '''
-        P1, P2 = list_pods()
-        self.LAST_POD_KILLED = delete_pod(P1, P2)
+        if constants.OFFLINE_MODE == False:
+            P1, P2 = list_pods()
+            self.LAST_POD_KILLED = delete_pod(P1, P2)
    
     # def delayed_remove(self, sprite):        
     #     time.sleep(2)
     #     sprite.remove_from_sprite_lists()
 
     def punch(self):
+        ''' Punch a crate '''
         # --- Punch left
         # See if we have a physics object to our left
         self.player.punching = True
 
-        check_point = (self.player.right + 20, self.player.center_y)
+        check_point = (self.player.right + 40, self.player.center_y)
         shape_list = self.space.point_query(check_point, 1, pymunk.ShapeFilter())
         
         # Apply force to any object to our left
         for shape in shape_list:
             # print(shape.shape.name)
+            arcade.play_sound(self.punch_sound)
             shape.shape.body.apply_impulse_at_world_point((PLAYER_PUNCH_IMPULSE, PLAYER_PUNCH_IMPULSE),
                                                           check_point)
             # Hit counter
@@ -384,11 +407,12 @@ class MyGame(arcade.Window):
 
         # --- Punch right
         # See if we have a physics object to our left
-        check_point = (self.player.left - 20, self.player.center_y)
+        check_point = (self.player.left - 40, self.player.center_y)
         shape_list = self.space.point_query(check_point, 1, pymunk.ShapeFilter())
 
         # Apply force to any object to our right
         for shape in shape_list:
+            arcade.play_sound(self.punch_sound)
             shape.shape.body.apply_impulse_at_world_point((-PLAYER_PUNCH_IMPULSE, PLAYER_PUNCH_IMPULSE),
                                                           check_point)
             # Hit counter
