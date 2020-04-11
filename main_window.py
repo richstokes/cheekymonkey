@@ -338,7 +338,9 @@ class MyGame(arcade.Window):
             #     print(sprite.shape.name)
             if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH: # Destroy container if hit CONTAINER_HEALTH times
                 # logging.info("Destroying shape %s", sprite.shape)
+                self.space.remove(sprite.body, sprite.shape)
                 sprite.remove_from_sprite_lists()
+                # print(len(self.space.shapes))
                 arcade.play_sound(self.explode_sound)
                 # Kill random pod!
                 delete_thread = threading.Thread(target=self.kill_pod)
