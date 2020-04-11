@@ -15,7 +15,7 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 
 Kubernetes pods are represented by crates in the game. The more pods you have, the more crates are dropped!  
 
-You control the monkey with the arrow keys, and punch crates with spacebar.  
+You control the monkey with the arrow keys, and punch crates with spacebar. You can also hold 'G' to grab a crate to your right and drag it around.  
 
 Every time the monkey destroys a crate, a pod in your cluster is randomly selected and deleted.  
 

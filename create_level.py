@@ -18,23 +18,39 @@ from k8s_kill_pod import count_pods
 
 def create_floor(space, sprite_list):
     """ Create a bunch of blocks for the floor. """
-    for x in range(-2400, 4400, constants.SPRITE_SIZE): # Layer of grass
-        y = constants.SPRITE_SIZE / 2
-        sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
+    # Layer of grass
+    for x in range(-2400, 4400, constants.SPRITE_SIZE):
+        # y = constants.SPRITE_SIZE / 2
+        # sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
+        # sprite_list.append(sprite)
+        # space.add(sprite.body, sprite.shape)
+        sprite = arcade.Sprite("./images/tiles/grassMid.png", 0.5)
+        sprite.center_y = constants.SPRITE_SIZE / 2
+        sprite.center_x = x
         sprite_list.append(sprite)
-        space.add(sprite.body, sprite.shape)
 
-    for x in range(-2400, 4400, constants.SPRITE_SIZE): # First layer of dirt
+    # Create one big rectangle as the floor physic body, instead of one per tile
+    xpos = -2400
+    ypos = constants.SPRITE_SIZE / 2 - 4
+    body = pymunk.Body(body_type=pymunk.Body.STATIC)
+    body.position = pymunk.Vec2d(xpos, ypos)
+    shape = pymunk.Poly.create_box(body, (10000, constants.SPRITE_SIZE))
+    shape.friction = constants.DEFAULT_FRICTION
+    space.add(body, shape)
+    
+    # First layer of dirt
+    for x in range(-2400, 4400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
-        space.add(sprite.body, sprite.shape)
-
-    for x in range(-2400, 4400, constants.SPRITE_SIZE): # Extra layer of dirt
+        # space.add(sprite.body, sprite.shape)
+    
+    # Extra layer of dirt
+    for x in range(-2400, 4400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
-        space.add(sprite.body, sprite.shape)
+        # space.add(sprite.body, sprite.shape)
 
 def create_walls(space, sprite_list):
     """ Create side walls """
