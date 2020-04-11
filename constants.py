@@ -7,10 +7,10 @@ CONTAINER_HEALTH = 4
 
 # Container multiplication factor
 # Will create (Actual number of running pods * CONTAINER_FACTOR) crates in game. Each crate represents one pod
-CONTAINER_FACTOR = 0.4
+CONTAINER_FACTOR = 1
 
 # How many containers to spawn in offline mode
-OFFLINE_CRATE_COUNT = 20
+OFFLINE_CRATE_COUNT = 8
 
 # Default friction used for sprites, unless otherwise specified
 DEFAULT_FRICTION = 0.4

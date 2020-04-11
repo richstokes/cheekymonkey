@@ -46,7 +46,7 @@ class Player(arcade.Sprite):
         self.body = pymunk.Body(mass, moment, body_type=body_type)
         self.body.position = pymunk.Vec2d(center_x, center_y)
 
-        self.shape = pymunk.Poly.create_box(self.body, (width * 0.90, height * 0.90,), radius=0.8)
+        self.shape = pymunk.Poly.create_box(self.body, (width * 0.90, height * 0.90,), radius=0.8) # was 0.8
         self.shape.friction = friction
         self.shape.HITCOUNT = -100
         self.shape.name = "Player"

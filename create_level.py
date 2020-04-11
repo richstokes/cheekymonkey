@@ -175,7 +175,7 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
     decorate_cactus_large(bg_sprite_list, 0, 127, 3)
     decorate_grass(bg_sprite_list, 0, 95, 20)
     decorate_rock(bg_sprite_list, 0, 95, 3)
-    decorate_rock_small(fg_sprite_list, 0, 72, 10)
+    decorate_rock_small(fg_sprite_list, 0, 73, 10)
     # decorate_clouds(bg_sprite_list, 10)
 
     # Create the stacks of boxes based on number of running pods or create random ones if offline mode
@@ -197,8 +197,8 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
     # Create crates in random locations, based on number of pods * CONTAINER_FACTOR
     i = 0
     while i < int(CRATE_COUNT * constants.CONTAINER_FACTOR):
-        x = random.randrange(-1000, 2000)
-        y = random.randrange(200, 6000) # Drop crates in from random heights
+        x = random.randrange(-1000, 1900)
+        y = random.randrange(200, 7000) # Drop crates in from random heights
         # print(x)
         # print(y)    
         sprite = PymunkSprite("./images/tiles/boxCrate_double.png", x, y, scale=constants.SPRITE_SCALING, friction=0.6)

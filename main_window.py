@@ -127,11 +127,13 @@ class MyGame(arcade.Window):
         # This command has to happen before we start drawing
         arcade.start_render()
 
-        # self.player.draw_hit_box(arcade.color.RED, 3) # Draw hitboxes for debugging
-
+        for sprite in self.dynamic_sprite_list: # Draw hitboxes for debugging
+            sprite.draw_hit_box(arcade.color.RED, 3)
+        # for sprite in self.bg_sprite_list:
+        #     sprite.draw_hit_box(arcade.color.BLUE, 3)
         # print("Number of dynamic sprites present:", len(self.dynamic_sprite_list))
 
-        # Start timing how long this takes
+        # Start timing how long rendering takes
         draw_start_time = timeit.default_timer()
 
         # Draw all the sprites
