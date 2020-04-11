@@ -1,7 +1,7 @@
 import timeit
 import os
 import arcade
-from pyglet.gl import GL_NEAREST
+from pyglet.gl import GL_NEAREST, GL_LINEAR
 import pymunk
 import logging
 import math
@@ -106,7 +106,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         x = 50
-        y = (SCREEN_HEIGHT / 2)
+        y = int((SCREEN_HEIGHT / 2))
         # self.player = Player("./images/tiles/grassMid.png", x, y, scale=0.5, moment=pymunk.inf, mass=1)
         self.player = Player("./images/Char_Monkey_Free_Images/Animations/monkey_idle.png", x, y, scale=0.5, moment=pymunk.inf, mass=1)
         # self.player.center_x = SCREEN_WIDTH / 2
@@ -119,6 +119,7 @@ class MyGame(arcade.Window):
         self.jump_sound = arcade.load_sound("./sounds/jump3.wav")
         self.punch_sound = arcade.load_sound("./sounds/woodhit.wav")
         self.explode_sound = arcade.load_sound("./sounds/432668__dxeyes__crate-break-4.wav")
+        self.ball_sound = arcade.load_sound("./sounds/laser4.wav")
         
 
     def on_draw(self):
@@ -199,6 +200,7 @@ class MyGame(arcade.Window):
             body.velocity = 2000, 0
             shape = pymunk.Circle(body, radius, pymunk.Vec2d(0, 0))
             shape.friction = 0.3
+            arcade.play_sound(self.ball_sound)
             self.space.add(body, shape)
 
             sprite = CircleSprite(shape, "./images/items/coinGold.png")
@@ -251,10 +253,11 @@ class MyGame(arcade.Window):
             changed = True
 
         if changed:
-            arcade.set_viewport(self.view_left,
-                                SCREEN_WIDTH + self.view_left,
-                                self.view_bottom,
-                                SCREEN_HEIGHT + self.view_bottom)
+            arcade.set_viewport(int(self.view_left),
+                                int(SCREEN_WIDTH + self.view_left),
+                                int(self.view_bottom),
+                                int(SCREEN_HEIGHT + self.view_bottom))
+            # print(arcade.get_viewport())
 
     def on_update(self, delta_time):
         """ Update the sprites """

@@ -31,7 +31,7 @@ PLAYER_PUNCH_IMPULSE = 1000
 SPRITE_SIZE = 64
 
 # How close we get to the edge before scrolling
-VIEWPORT_MARGIN = 100
+VIEWPORT_MARGIN = 128
 
 # Player textures
 TEXTURE_LEFT = 0
