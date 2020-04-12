@@ -48,7 +48,9 @@ class MyGame(arcade.Window):
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        arcade.set_background_color(arcade.color.DARK_MOSS_GREEN)
+        # arcade.set_background_color((0, 196, 231)) # lighter background
+        arcade.set_background_color((0, 101, 186)) # darker background
+
         # Sprite list for balls
         self.ball_sprite_list: arcade.SpriteList[PhysicsSprite] = arcade.SpriteList()
 
@@ -101,6 +103,7 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
+
         # Build the level
         create_level_1(self.space, self.static_sprite_list, self.dynamic_sprite_list, self.bg_sprite_list, self.fg_sprite_list)
 
@@ -127,6 +130,7 @@ class MyGame(arcade.Window):
         self.frame_count += 1
         # This command has to happen before we start drawing
         arcade.start_render()
+
 
         # for sprite in self.dynamic_sprite_list: # Draw hitboxes for debugging
         #     sprite.draw_hit_box(arcade.color.RED, 3)

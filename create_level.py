@@ -6,7 +6,7 @@ import arcade
 import random
 import sys
 import logging
-from random import randint
+from random import randint, uniform
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 from physics_utility import (
@@ -30,11 +30,11 @@ def create_floor(space, sprite_list):
         sprite_list.append(sprite)
 
     # Create one big rectangle as the floor physic body, instead of one per tile
-    xpos = -2400
+    xpos = constants.SCREEN_WIDTH / 2
     ypos = constants.SPRITE_SIZE / 2 - 4
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
     body.position = pymunk.Vec2d(xpos, ypos)
-    shape = pymunk.Poly.create_box(body, (10000, constants.SPRITE_SIZE))
+    shape = pymunk.Poly.create_box(body, (6800, constants.SPRITE_SIZE))
     shape.friction = constants.DEFAULT_FRICTION
     space.add(body, shape)
     
@@ -57,14 +57,14 @@ def create_walls(space, sprite_list):
     # Left wall
     for y in range(96, 2000, constants.SPRITE_SIZE): # was 96 - constants.SPRITE_SIZE
         # x = constants.SPRITE_SIZE / 4
-        x = -1000 - constants.SPRITE_SIZE
+        x = -1200 - constants.SPRITE_SIZE
         sprite = PymunkSprite("./images/tiles/brickBrown.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
     # Right wall
     for y in range(96, 2000, constants.SPRITE_SIZE):
         # x = constants.SPRITE_SIZE / 4
-        x = 1960 - constants.SPRITE_SIZE
+        x = 2200 - constants.SPRITE_SIZE
         sprite = PymunkSprite("./images/tiles/brickBrown.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
@@ -167,9 +167,10 @@ def decorate_rock_small(sprite_list, start_x, y, count):
 def decorate_clouds(sprite_list, count):
     """ Create some clouds """
     for x in range(0, count):
-        sprite = arcade.Sprite("./images/tiles/snow_pile.png", 3)
-        sprite.center_y = randint(700, 1500)
-        sprite.center_x = randint(-1500, 1500)
+        # sprite = arcade.Sprite("./images/misc/cloud" + str(randint(1, 5)) + ".png", random.uniform(0.3,1))
+        sprite = arcade.Sprite("./images/misc/mbcloud" + str(randint(1, 2)) + ".png", random.uniform(0.2,1.4))
+        sprite.center_y = randint(700, 2000)
+        sprite.center_x = randint(-3000, 7000)
         sprite_list.append(sprite)
 
 def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_list, fg_sprite_list):
@@ -198,7 +199,7 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
     decorate_grass(bg_sprite_list, 0, 95, 20)
     decorate_rock(bg_sprite_list, 0, 95, 3)
     decorate_rock_small(fg_sprite_list, 0, 73, 10)
-    # decorate_clouds(bg_sprite_list, 10)
+    decorate_clouds(bg_sprite_list, 15)
 
     # Create the stacks of boxes based on number of running pods or create random ones if offline mode
     # print(constants.OFFLINE_MODE)
