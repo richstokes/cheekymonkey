@@ -264,16 +264,15 @@ class MyGame(arcade.Window):
 
         # Keep track of how long this function takes.
         start_time = timeit.default_timer()
-        # print(self.player.scale)
         
         # print(self.player.body.position)
         # # Print key states for debugging
         # logging.info("Left: %s", self.left_pressed)
         # logging.info("Right: %s", self.right_pressed)
         # logging.info("Up: %s", self.up_pressed)
-        
-        # self.player.center_y = self.player.center_y + 6
-        
+        print(self.force, self.player.shape.friction)    
+        print(self.player.body.velocity[0])
+                
         # # Debug grounding
         # grounding = check_grounding(self.player) # find out if player is standing on ground
         # if grounding['body'] is not None:
@@ -304,14 +303,21 @@ class MyGame(arcade.Window):
             # self.force = (0, 0)
             # self.player.shape.friction = PLAYER_FRICTION * 10 # act as a brake?
             pass
+
         if self.left_pressed and not self.right_pressed:
-            # Add force to the player, and set the player friction to zero
-            self.force = (-PLAYER_MOVE_FORCE, 0)
-            self.player.shape.friction = 0
+            if self.player.body.velocity[0] >= 100: # If player already running right, apply the brakes so we can switch directions faster
+                self.force = (-4500, 0)
+                self.player.shape.friction = PLAYER_FRICTION * 15
+            else: # Add force to the player, and set the player friction to zero
+                self.force = (-PLAYER_MOVE_FORCE, 0)
+                self.player.shape.friction = 0
         elif self.right_pressed and not self.left_pressed:
-            # Add force to the player, and set the player friction to zero
-            self.force = (PLAYER_MOVE_FORCE, 0)
-            self.player.shape.friction = 0
+            if self.player.body.velocity[0] <= -100: # If player already running left, apply the brakes so we can switch directions faster
+                self.force = (4500, 0)
+                self.player.shape.friction = PLAYER_FRICTION * 15
+            else: # Add force to the player, and set the player friction to zero
+                self.force = (PLAYER_MOVE_FORCE, 0)
+                self.player.shape.friction = 0
         if not self.right_pressed and not self.left_pressed and not self.up_pressed:
             #If no directions pressed, stop player
             self.force = (0, 0)
