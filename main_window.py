@@ -270,8 +270,8 @@ class MyGame(arcade.Window):
         # logging.info("Left: %s", self.left_pressed)
         # logging.info("Right: %s", self.right_pressed)
         # logging.info("Up: %s", self.up_pressed)
-        print(self.force, self.player.shape.friction)    
-        print(self.player.body.velocity[0])
+        # print(self.force, self.player.shape.friction)    
+        # print(self.player.body.velocity[0])
                 
         # # Debug grounding
         # grounding = check_grounding(self.player) # find out if player is standing on ground
@@ -322,6 +322,12 @@ class MyGame(arcade.Window):
             #If no directions pressed, stop player
             self.force = (0, 0)
             self.player.shape.friction = PLAYER_FRICTION * 15 # Greatly increase friction so player stops instead of sliding
+
+        # Enforce player speed limit
+        if self.player.body.velocity[0] >= PLAYER_SPEED_LIMIT:
+            self.force = (-500, 0)
+        if self.player.body.velocity[0] <= -PLAYER_SPEED_LIMIT:
+            self.force = (500, 0)
 
         # print(self.force, self.player.shape.friction, self.player.body.velocity) # Debug physics
 
