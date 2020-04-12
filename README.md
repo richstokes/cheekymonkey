@@ -25,7 +25,7 @@ Every time the monkey destroys a crate, a pod in your cluster is randomly select
 
 1. Clone the repo
 2. `pip3 install -r requirements.txt`
-3. `python3 main_window.py`
+3. `python3 cheekymonkey.py`
 
 Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
 
