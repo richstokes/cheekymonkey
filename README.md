@@ -5,7 +5,7 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 &nbsp;
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/intro.gif" width="75%">
+<img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/intro.gif" width="65%">
 </p>
 
 >CHAOS ENGINEERING IS:
