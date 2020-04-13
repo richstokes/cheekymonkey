@@ -7,12 +7,12 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 <p align="center">
 <img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/intro.gif" width="65%">
 </p>
+&nbsp;
 
 >CHAOS ENGINEERING IS:
 >"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."
 
 &nbsp;
-
 Kubernetes pods are represented by crates in the game. The more pods you have, the more crates are dropped!  
 
 You control the monkey with the arrow keys, and punch crates with spacebar. You can also hold 'G' to grab a crate to your right and drag it around.  
