@@ -53,3 +53,7 @@ SCREEN_TITLE = 'Cheeky Monkey'
 # Online/offline selector
 ## Set this via the command line argument: --offline yes
 OFFLINE_MODE = False
+
+# Namespace exclusions
+## Set this via the command line argument: --excludes
+EXCLUDES_LIST = []

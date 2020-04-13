@@ -33,7 +33,8 @@ Press 'R' to reset the game.
 
 Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
 
-Note: The game will target pods across ALL namespaces.  
+Note: The game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:
+`python3 cheekymonkey.py --offline no --exclude kube-system cert-manager`
 
 
 &nbsp;
@@ -41,6 +42,7 @@ Note: The game will target pods across ALL namespaces.
 #### Command line Options
 
 `--offline yes`  Switches to offline mode, no pods will be harmed
+`--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude
 
 
 &nbsp;

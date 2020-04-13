@@ -523,6 +523,7 @@ def main():
     # Process arguments
     parser = argparse.ArgumentParser(description='A Chaos Monkey for your Kubernetes cluster!')
     parser.add_argument("--offline", default="no", help="Set to yes to enable offline mode")
+    parser.add_argument('-e','--exclude', nargs='*', help='<Optional> Space-separated list of namespaces to NOT target')
 
     args = parser.parse_args()
     offline = args.offline
@@ -533,7 +534,9 @@ def main():
     else:
         logging.info("Starting in online mode")
         constants.OFFLINE_MODE = False
-    # print(constants.OFFLINE_MODE)
+
+    constants.EXCLUDES_LIST = args.exclude
+    logging.info("Excluding namespaces: %s", constants.EXCLUDES_LIST)
 
     window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     window.setup()

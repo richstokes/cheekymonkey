@@ -31,7 +31,10 @@ def list_pods():
             logging.info("Number of pods: %s", POD_COUNT)
 
             # Select random pod
-            random.shuffle(ret.items)
+            print(ret.items[0].metadata.namespace)
+            while ret.items[0].metadata.namespace in constants.EXCLUDES_LIST:
+                logging.info("Pod in excluded namespace, shuffling")
+                random.shuffle(ret.items)
             POD_TO_KILL = ret.items[0].metadata.name
             POD_NAMESPACE = ret.items[0].metadata.namespace
             return([POD_TO_KILL, POD_NAMESPACE])
@@ -50,7 +53,7 @@ def delete_pod(name, namespace):
             config.load_kube_config()
             v1 = client.CoreV1Api()
             # logging.info(v1.api_client.configuration.host)
-            logging.info("Killing Random pod: %s", name)
+            logging.info("Killing Random pod: %s from namespace: %s", name, namespace)
             
             # Delete random pod
             delete_options = client.V1DeleteOptions()
