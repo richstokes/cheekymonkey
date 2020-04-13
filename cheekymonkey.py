@@ -127,8 +127,8 @@ class MyGame(arcade.Window):
         self.ball_sound = arcade.load_sound("./sounds/laser4.wav")
         self.game_over_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
         self.game_over_sound_did_play = False
-        self.intro_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
-        self.intro_sound_did_play = False
+        # self.intro_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
+        # self.intro_sound_did_play = False
         
 
     def on_draw(self):
@@ -156,7 +156,7 @@ class MyGame(arcade.Window):
 
         # Display game over screen when needed
         if self.game_over:
-            arcade.draw_text("Game Over", self.view_left + SCREEN_WIDTH / 4, self.view_bottom + SCREEN_HEIGHT / 2, arcade.color.BLACK, 100)
+            arcade.draw_text("Game Over", self.view_left + SCREEN_WIDTH / 4, self.view_bottom + SCREEN_HEIGHT / 2, arcade.color.BLACK, 100,  font_name = ["Impact", "Courier", "Helvetica"])
 
         # Once per split second
         if self.frame_count % 20 == 0:
@@ -186,7 +186,7 @@ class MyGame(arcade.Window):
         # Display last pod killed
         if self.LAST_POD_KILLED:
             output = f"Last pod killed: {self.LAST_POD_KILLED}"
-            arcade.draw_text(output, 20 + self.view_left, SCREEN_HEIGHT - 20 + self.view_bottom, arcade.color.WHITE, 12)
+            arcade.draw_text(output, 20 + self.view_left, SCREEN_HEIGHT - 20 + self.view_bottom, arcade.color.WHITE, 12, font_name = ["Helvetica"])
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
@@ -284,6 +284,7 @@ class MyGame(arcade.Window):
             # logging.info("Game Over!")
             self.game_over = True
             if self.game_over_sound_did_play:
+                self.player.texture = self.player.textures[TEXTURE_IDLE_2]
                 return
             else:
                 arcade.play_sound(self.game_over_sound)
