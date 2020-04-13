@@ -41,8 +41,8 @@ Note: The game will target pods across ALL namespaces, unless you specify namesp
 
 #### Command line Options
 
-`--offline yes`  Switches to offline mode, no pods will be harmed
-`--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude
+`--offline yes`  Switches to offline mode, no pods will be harmed  
+`--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude  
 
 
 &nbsp;
