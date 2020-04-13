@@ -101,6 +101,8 @@ class MyGame(arcade.Window):
         self.down_pressed = False
         self.is_jumping = False
 
+        self.game_over = False
+
     def setup(self):
         """ Set up the game and initialize the variables. """
 
@@ -123,6 +125,10 @@ class MyGame(arcade.Window):
         self.punch_sound = arcade.load_sound("./sounds/woodhit.wav")
         self.explode_sound = arcade.load_sound("./sounds/432668__dxeyes__crate-break-4.wav")
         self.ball_sound = arcade.load_sound("./sounds/laser4.wav")
+        self.game_over_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
+        self.game_over_sound_did_play = False
+        self.intro_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
+        self.intro_sound_did_play = False
         
 
     def on_draw(self):
@@ -147,6 +153,10 @@ class MyGame(arcade.Window):
         self.dynamic_sprite_list.draw(filter=GL_NEAREST)
         self.ball_sprite_list.draw()
         self.fg_sprite_list.draw(filter=GL_NEAREST)
+
+        # Display game over screen when needed
+        if self.game_over:
+            arcade.draw_text("Game Over", self.view_left + SCREEN_WIDTH / 4, self.view_bottom + SCREEN_HEIGHT / 2, arcade.color.BLACK, 100)
 
         # Once per split second
         if self.frame_count % 20 == 0:
@@ -269,6 +279,17 @@ class MyGame(arcade.Window):
         # Keep track of how long this function takes.
         start_time = timeit.default_timer()
         
+        # See if all crates have been destroyed
+        if len(self.dynamic_sprite_list) - 1 <= 0:
+            # logging.info("Game Over!")
+            self.game_over = True
+            if self.game_over_sound_did_play:
+                return
+            else:
+                arcade.play_sound(self.game_over_sound)
+                self.game_over_sound_did_play = True # Only play sound once
+                return # Exit early / stop updating physics after game over
+
         # print(self.player.body.position)
         # # Print key states for debugging
         # logging.info("Left: %s", self.left_pressed)

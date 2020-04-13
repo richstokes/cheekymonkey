@@ -168,7 +168,7 @@ def decorate_clouds(sprite_list, count):
     """ Create some clouds """
     for x in range(0, count):
         # sprite = arcade.Sprite("./images/misc/cloud" + str(randint(1, 5)) + ".png", random.uniform(0.3,1))
-        sprite = arcade.Sprite("./images/misc/mbcloud" + str(randint(1, 2)) + ".png", random.uniform(0.2,1.4))
+        sprite = arcade.Sprite("./images/misc/mbcloud" + str(randint(1, 2)) + ".png", random.uniform(0.2,1))
         sprite.center_y = randint(700, 2000)
         sprite.center_x = randint(-3000, 7000)
         sprite_list.append(sprite)
