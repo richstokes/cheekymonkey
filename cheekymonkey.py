@@ -436,7 +436,7 @@ class MyGame(arcade.Window):
         for shape in shape_list:
             # print(shape.shape.name)
             arcade.play_sound(self.punch_sound)
-            shape.shape.body.apply_impulse_at_world_point((PLAYER_PUNCH_IMPULSE, PLAYER_PUNCH_IMPULSE),
+            shape.shape.body.apply_impulse_at_world_point((constants.PLAYER_PUNCH_IMPULSE, constants.PLAYER_PUNCH_IMPULSE),
                                                           check_point)
             # Hit counter
             shape.shape.HITCOUNT += 1
@@ -450,7 +450,7 @@ class MyGame(arcade.Window):
         # Apply force to any object to our right
         for shape in shape_list:
             arcade.play_sound(self.punch_sound)
-            shape.shape.body.apply_impulse_at_world_point((-PLAYER_PUNCH_IMPULSE, PLAYER_PUNCH_IMPULSE),
+            shape.shape.body.apply_impulse_at_world_point((-constants.PLAYER_PUNCH_IMPULSE, constants.PLAYER_PUNCH_IMPULSE),
                                                           check_point)
             # Hit counter
             shape.shape.HITCOUNT += 1
@@ -490,6 +490,12 @@ class MyGame(arcade.Window):
         elif symbol == arcade.key.R:
             logging.info("Resetting game")
             self.setup()
+        elif symbol == arcade.key.PLUS or symbol == arcade.key.EQUAL:
+            constants.PLAYER_PUNCH_IMPULSE = constants.PLAYER_PUNCH_IMPULSE * 1.1
+            logging.info("Increased punch force: %s", constants.PLAYER_PUNCH_IMPULSE)
+        elif symbol == arcade.key.MINUS:
+            constants.PLAYER_PUNCH_IMPULSE = constants.PLAYER_PUNCH_IMPULSE / 1.1
+            logging.info("Decreasing punch force: %s", constants.PLAYER_PUNCH_IMPULSE)        
 
     def on_key_release(self, symbol: int, modifiers: int):
         """ Handle keyboard releases. """

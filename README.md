@@ -52,7 +52,9 @@ Change the following in `constants.py`:
 - Resolution - set `SCREEN_WIDTH`  and `SCREEN_HEIGHT` as desired
 - `CONTAINER_FACTOR` - Multiplication factor for creating crates based on the actual number of containers in your cluster. The idea is you can use this to get a reasonable number of crates in game if you have a lot of running pods in your cluster.
 - `CONTAINER_HEALTH` - How many times the monkey needs to hit the crate before its corresponding pod is killed
-- `OFFLINE_CRATE_COUNT` - How many crates to spawn in offline mode (Multiplied by `CONTAINER_FACTOR`)
+- `OFFLINE_CRATE_COUNT` - How many crates to spawn in offline mode (Multiplied by `CONTAINER_FACTOR`)  
+
+You can have fun with the physics by using the plus/minus keys to change the punching force.  
 
 
 &nbsp;
@@ -61,3 +63,5 @@ Change the following in `constants.py`:
 
 - [Monkey character sprites](https://www.gameartguppy.com/shop/monkey-game-character-sprites/ )
 - [Python Arcade Library](https://arcade.academy/index.html)
+- [CREDITS.md](https://github.com/richstokes/cheekymonkey/blob/master/CREDITS.md)
+
