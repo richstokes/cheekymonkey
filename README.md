@@ -28,7 +28,7 @@ Press 'R' to reset the game.
 ### Install & run
 
 1. Clone the repo
-2. `pip3 install -r requirements.txt`
+2. `pip install -r requirements.txt`
 3. `python3 cheekymonkey.py`
 
 Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
