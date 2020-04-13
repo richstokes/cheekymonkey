@@ -20,6 +20,9 @@ You control the monkey with the arrow keys, and punch crates with spacebar. You 
 
 Every time the monkey destroys a crate, a pod in your cluster is randomly selected and deleted.  
 
+Press 'R' to reset the game.  
+
+
 &nbsp;
 
 ### Install & run

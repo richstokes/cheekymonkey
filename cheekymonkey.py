@@ -51,8 +51,24 @@ class MyGame(arcade.Window):
         # arcade.set_background_color((0, 196, 231)) # lighter background
         arcade.set_background_color((0, 101, 186)) # darker background
 
-        # Sprite list for balls
-        self.ball_sprite_list: arcade.SpriteList[PhysicsSprite] = arcade.SpriteList()
+        # Used for dragging shapes around with the mouse
+        self.shape_being_dragged = None
+        self.last_mouse_position = 0, 0
+
+        # Draw and processing timings
+        self.draw_time = 0
+        self.processing_time = 0
+
+        # FPS Counter
+        self.last_time = None
+        self.frame_count = 0
+        self.fps_message = None
+
+        # Holds the status message for pods killed
+        self.LAST_POD_KILLED = None
+
+    def setup(self):
+        """ Set up the game and initialize the variables. """
 
         # -- Pymunk
         self.space = pymunk.Space()
@@ -69,14 +85,7 @@ class MyGame(arcade.Window):
         self.bg_sprite_list.is_static = True
         self.fg_sprite_list = arcade.SpriteList()
         self.fg_sprite_list.is_static = True
-
-        # Used for dragging shapes around with the mouse
-        self.shape_being_dragged = None
-        self.last_mouse_position = 0, 0
-
-        # Draw and processing timings
-        self.draw_time = 0
-        self.processing_time = 0
+        self.ball_sprite_list: arcade.SpriteList[PhysicsSprite] = arcade.SpriteList()
 
         # Current force applied to the player for movement by keyboard
         self.force = (0, 0)
@@ -86,14 +95,6 @@ class MyGame(arcade.Window):
         self.view_left = 0
         self.view_bottom = 0
 
-        # FPS Counter
-        self.last_time = None
-        self.frame_count = 0
-        self.fps_message = None
-
-        # Holds the status message for pods killed
-        self.LAST_POD_KILLED = None
-
         # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
@@ -101,10 +102,8 @@ class MyGame(arcade.Window):
         self.down_pressed = False
         self.is_jumping = False
 
+        # Holds game state
         self.game_over = False
-
-    def setup(self):
-        """ Set up the game and initialize the variables. """
 
         # Build the level
         create_level_1(self.space, self.static_sprite_list, self.dynamic_sprite_list, self.bg_sprite_list, self.fg_sprite_list)
@@ -495,9 +494,9 @@ class MyGame(arcade.Window):
             self.punch()
         elif symbol == arcade.key.G:
             self.grab()
-        # elif symbol == arcade.key.R:
-        #     logging.info("Resetting")
-        #     self.setup()
+        elif symbol == arcade.key.R:
+            logging.info("Resetting game")
+            self.setup()
 
     def on_key_release(self, symbol: int, modifiers: int):
         """ Handle keyboard releases. """
