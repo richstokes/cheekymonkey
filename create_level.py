@@ -19,7 +19,7 @@ from k8s_kill_pod import count_pods
 def create_floor(space, sprite_list):
     """ Create a bunch of blocks for the floor. """
     # Layer of grass
-    for x in range(-2400, 4400, constants.SPRITE_SIZE):
+    for x in range(-4400, 4400, constants.SPRITE_SIZE):
         # y = constants.SPRITE_SIZE / 2
         # sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         # sprite_list.append(sprite)
@@ -34,19 +34,19 @@ def create_floor(space, sprite_list):
     ypos = constants.SPRITE_SIZE / 2 - 4
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
     body.position = pymunk.Vec2d(xpos, ypos)
-    shape = pymunk.Poly.create_box(body, (6800, constants.SPRITE_SIZE))
+    shape = pymunk.Poly.create_box(body, (8800, constants.SPRITE_SIZE))
     shape.friction = constants.DEFAULT_FRICTION
     space.add(body, shape)
     
     # First layer of dirt
-    for x in range(-2400, 4400, constants.SPRITE_SIZE):
+    for x in range(-4400, 4400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         # space.add(sprite.body, sprite.shape)
     
     # Extra layer of dirt
-    for x in range(-2400, 4400, constants.SPRITE_SIZE):
+    for x in range(-4400, 4400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
@@ -80,12 +80,12 @@ def decorate_cactus(sprite_list, start_x, y, count):
     """ Create a cactus """
     for x in range(0, count):
         # print(x)
-        X_POSITION = randint(-1000, 2000) # Initial random position
+        X_POSITION = randint(-3000, 3000) # Initial random position
         POSITION_OK = False
         while POSITION_OK == False:
             if any(X_POSITION in range(s.center_x - 40, s.center_x + 40) for s in sprite_list):
                 # print(X_POSITION, s)
-                X_POSITION = randint(-1000, 2000)
+                X_POSITION = randint(-3000, 3000)
             else:
                 # print("Outside of if any, cactus position good!")
                 POSITION_OK = True
@@ -99,12 +99,12 @@ def decorate_cactus_large(sprite_list, start_x, y, count):
     """ Create a cactus """
     for x in range(0, count):
         # print(x)
-        X_POSITION = randint(-1000, 2000) # Initial random position
+        X_POSITION = randint(-3000, 3000) # Initial random position
         POSITION_OK = False
         while POSITION_OK == False:
             if any(X_POSITION in range(s.center_x - 100, s.center_x + 100) for s in sprite_list):
                 # print(X_POSITION, s)
-                X_POSITION = randint(-1000, 2000)
+                X_POSITION = randint(-3000, 3000)
             else:
                 # print("Outside of if any, cactus position good!")
                 POSITION_OK = True
@@ -113,15 +113,33 @@ def decorate_cactus_large(sprite_list, start_x, y, count):
                 sprite.center_x = X_POSITION # Randomly place cacti 
                 sprite_list.append(sprite)                
 
+def decorate_cactus_tiny(sprite_list, start_x, y, count):
+    """ Create a distant cactus """
+    for x in range(0, count):
+        # print(x)
+        X_POSITION = randint(-3000, 3000) # Initial random position
+        POSITION_OK = False
+        while POSITION_OK == False:
+            if any(X_POSITION in range(s.center_x - 200, s.center_x + 200) for s in sprite_list):
+                # print(X_POSITION, s)
+                X_POSITION = randint(-3000, 3000)
+            else:
+                # print("Outside of if any, cactus position good!")
+                POSITION_OK = True
+                sprite = arcade.Sprite("./images/tiles/cactus2.png", 0.2)
+                sprite.center_y = y
+                sprite.center_x = X_POSITION # Randomly place cacti 
+                sprite_list.append(sprite) 
+
 def decorate_grass(sprite_list, start_x, y, count):
     """ Create some grass """
     for x in range(0, count):
-        X_POSITION = randint(-1000, 2000) # Initial random position
+        X_POSITION = randint(-3000, 3000) # Initial random position
         POSITION_OK = False
         while POSITION_OK == False:
                     if any(X_POSITION in range(s.center_x - 20, s.center_x + 20) for s in sprite_list):
                         # print(X_POSITION, s)
-                        X_POSITION = randint(-1000, 2000)        
+                        X_POSITION = randint(-3000, 3000)        
                     else:
                             # print("Outside of if any, grass position good!")
                             POSITION_OK = True 
@@ -133,7 +151,7 @@ def decorate_grass(sprite_list, start_x, y, count):
 def decorate_rock(sprite_list, start_x, y, count):
     """ Create some rocks """
     for x in range(0, count):
-        X_POSITION = randint(-1000, 2000) # Initial random position
+        X_POSITION = randint(-3000, 3000) # Initial random position
         POSITION_OK = False
         while POSITION_OK == False:
                     if any(X_POSITION in range(s.center_x - 10, s.center_x + 10) for s in sprite_list):
@@ -150,12 +168,12 @@ def decorate_rock(sprite_list, start_x, y, count):
 def decorate_rock_small(sprite_list, start_x, y, count):
     """ Create some rocks """
     for x in range(0, count):
-        X_POSITION = randint(-1000, 2000) # Initial random position
+        X_POSITION = randint(-3000, 3000) # Initial random position
         POSITION_OK = False
         while POSITION_OK == False:
                     if any(X_POSITION in range(s.center_x - 10, s.center_x + 10) for s in sprite_list):
                         # print(X_POSITION, s)
-                        X_POSITION = randint(-1000, 2000)        
+                        X_POSITION = randint(-3000, 3000)        
                     else:
                             # print("Outside of if any, rock position good!")
                             POSITION_OK = True 
@@ -169,37 +187,46 @@ def decorate_clouds(sprite_list, count):
     for x in range(0, count):
         # sprite = arcade.Sprite("./images/misc/cloud" + str(randint(1, 5)) + ".png", random.uniform(0.3,1))
         sprite = arcade.Sprite("./images/misc/mbcloud" + str(randint(1, 2)) + ".png", random.uniform(0.2,1))
-        sprite.center_y = randint(700, 2000)
-        sprite.center_x = randint(-3000, 7000)
+        sprite.center_y = randint(700, 3000)
+        sprite.center_x = randint(-2500, 2500)
+        # print(sprite.center_x)
         sprite_list.append(sprite)
 
 def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_list, fg_sprite_list):
     """ Create level one. """
     create_floor(space, static_sprite_list)
-    create_walls(space, static_sprite_list)
+    # create_walls(space, static_sprite_list)
     create_platform(space, static_sprite_list, 200, constants.SPRITE_SIZE * 3, 3)
     create_platform(space, static_sprite_list, 500, constants.SPRITE_SIZE * 6, 3)
     create_platform(space, static_sprite_list, 200, constants.SPRITE_SIZE * 9, 3)
     create_platform(space, static_sprite_list, -300, constants.SPRITE_SIZE * 3, 3)
     create_platform(space, static_sprite_list, -600, constants.SPRITE_SIZE * 6, 2)
+
+    # Far left platforms
     create_platform(space, static_sprite_list, -900, constants.SPRITE_SIZE * 9, 3)
-    create_platform(space, static_sprite_list, -900, constants.SPRITE_SIZE * 3, 1)
+    create_platform(space, static_sprite_list, -1200, constants.SPRITE_SIZE * 3, 1)
+    create_platform(space, static_sprite_list, -1600, constants.SPRITE_SIZE * 6, 2)
+    create_platform(space, static_sprite_list, -1800, constants.SPRITE_SIZE * 13, 4)
+    create_platform(space, static_sprite_list, -2100, constants.SPRITE_SIZE * 9, 3)
+
     create_platform(space, static_sprite_list, -840, constants.SPRITE_SIZE * 13, 1)
     create_platform(space, static_sprite_list, 0, constants.SPRITE_SIZE * 13, 3)
 
     # Add some more to the right
-    create_platform(space, static_sprite_list, 1040, constants.SPRITE_SIZE * 4, 5)
+    create_platform(space, static_sprite_list, 1040, constants.SPRITE_SIZE * 4, 3)
     create_platform(space, static_sprite_list, 1440, constants.SPRITE_SIZE * 6, 2)
-    create_platform(space, static_sprite_list, 1640, constants.SPRITE_SIZE * 8, 1)
+    create_platform(space, static_sprite_list, 1840, constants.SPRITE_SIZE * 8, 1)
     create_platform(space, static_sprite_list, 800, constants.SPRITE_SIZE * 8, 1)
+    create_platform(space, static_sprite_list, 2300, constants.SPRITE_SIZE * 10, 1)
 
     # Add decorations
-    decorate_cactus(bg_sprite_list, 0, 96, 8) # Cacti along ground
-    decorate_cactus_large(bg_sprite_list, 0, 127, 3)
+    decorate_cactus(bg_sprite_list, 0, 96, 12) # Cacti along ground
+    decorate_cactus_large(bg_sprite_list, 0, 127, 4)
+    decorate_cactus_tiny(bg_sprite_list, 0, 76, 4)
     decorate_grass(bg_sprite_list, 0, 95, 20)
-    decorate_rock(bg_sprite_list, 0, 95, 3)
-    decorate_rock_small(fg_sprite_list, 0, 73, 10)
-    decorate_clouds(bg_sprite_list, 15)
+    decorate_rock(fg_sprite_list, 0, 92, 3)
+    decorate_rock_small(bg_sprite_list, 0, 73, 10)
+    decorate_clouds(bg_sprite_list, 20)
 
     # Create the stacks of boxes based on number of running pods or create random ones if offline mode
     # print(constants.OFFLINE_MODE)
@@ -220,7 +247,7 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
     # Create crates in random locations, based on number of pods * CONTAINER_FACTOR
     i = 0
     while i < int(CRATE_COUNT * constants.CONTAINER_FACTOR):
-        x = random.randrange(-1000, 1900)
+        x = random.randrange(-2000, 2200)
         y = random.randrange(200, 7000) # Drop crates in from random heights
         # print(x)
         # print(y)    
@@ -231,4 +258,4 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
         # arcade.play_sound(fall_sound)
         i += 1
 
-    logging.info("Number of crates created: %s", len(dynamic_sprite_list))
+    # logging.info("Number of crates created: %s", len(dynamic_sprite_list))

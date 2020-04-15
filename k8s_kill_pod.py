@@ -31,7 +31,7 @@ def list_pods():
             logging.info("Number of pods: %s", POD_COUNT)
 
             # Select random pod
-            print(ret.items[0].metadata.namespace)
+            # print(ret.items[0].metadata.namespace)
             while ret.items[0].metadata.namespace in constants.EXCLUDES_LIST:
                 logging.info("Pod in excluded namespace, shuffling")
                 random.shuffle(ret.items)

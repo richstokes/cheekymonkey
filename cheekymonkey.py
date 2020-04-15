@@ -122,7 +122,6 @@ class MyGame(arcade.Window):
         # self.intro_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
         # self.intro_sound_did_play = False
         
-
     def on_draw(self):
         """ Render the screen. """
         self.frame_count += 1
@@ -379,6 +378,9 @@ class MyGame(arcade.Window):
                 delete_thread = threading.Thread(target=self.kill_pod)
                 delete_thread.start()
 
+        # Check if we need to teleport
+        self.check_teleport()
+
         # Check for balls that fall off the screen
         for sprite in self.ball_sprite_list:
             if sprite.pymunk_shape.body.position.y < 0:
@@ -391,7 +393,7 @@ class MyGame(arcade.Window):
         for sprite in self.ball_sprite_list:
             sprite.center_x = sprite.pymunk_shape.body.position.x
             sprite.center_y = sprite.pymunk_shape.body.position.y
-            sprite.angle = math.degrees(sprite.pymunk_shape.body.angle)                     
+            sprite.angle = math.degrees(sprite.pymunk_shape.body.angle)
 
         # Update physics
         # Use a constant time step, don't use delta_time
@@ -412,6 +414,28 @@ class MyGame(arcade.Window):
 
         # Save the time it took to do this.
         self.processing_time = timeit.default_timer() - start_time
+
+    def check_teleport(self):
+        ''' See if we need to warp back to start of level '''
+        # print(self.player.position)
+        if self.player.position[0] > 3400: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(-3400, self.player.body.position[1])
+        if self.player.position[0] < -3400: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(3400, self.player.body.position[1])
+
+        for sprite in self.dynamic_sprite_list:
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] > 3400:
+                sprite.body.position = pymunk.Vec2d(-3400, int((SCREEN_HEIGHT / 4)))
+                # sprite.body.position = pymunk.Vec2d(100, 100)
+                # print("Sprite out of bounds")
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] < -3400:
+                sprite.body.position = pymunk.Vec2d(3400, int((SCREEN_HEIGHT / 4)))
+                # sprite.body.position = pymunk.Vec2d(100, 100)
+                # print("Sprite out of bounds")
+            if sprite.shape.name == "Pymunk" and sprite.body.position[1] < 0:
+                # print("sprite fell off world, removing")
+                self.space.remove(sprite.body, sprite.shape)
+                sprite.remove_from_sprite_lists()
 
     def kill_pod(self):
         ''' Deletes pod on kubernetes, then removes crate sprite from game '''

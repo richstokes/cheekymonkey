@@ -39,6 +39,7 @@ class PymunkSprite(arcade.Sprite):
         self.shape.HITCOUNT = 0
         self.shape.name = "Pymunk"
         self.scale = SPRITE_SCALING
+        # self.category = None
 
 def check_grounding(player):
     """ See if the player is on the ground. Used to see if we can jump. """
