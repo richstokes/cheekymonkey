@@ -418,18 +418,18 @@ class MyGame(arcade.Window):
     def check_teleport(self):
         ''' See if we need to warp back to start of level '''
         # print(self.player.position)
-        if self.player.position[0] > 3400: # Need to teleport player
-            self.player.body.position = pymunk.Vec2d(-3400, self.player.body.position[1])
-        if self.player.position[0] < -3400: # Need to teleport player
-            self.player.body.position = pymunk.Vec2d(3400, self.player.body.position[1])
+        if self.player.position[0] > 4400: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(-4400, self.player.body.position[1])
+        if self.player.position[0] < -4400: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(4400, self.player.body.position[1])
 
         for sprite in self.dynamic_sprite_list:
-            if sprite.shape.name == "Pymunk" and sprite.body.position[0] > 3400:
-                sprite.body.position = pymunk.Vec2d(-3400, int((SCREEN_HEIGHT / 4)))
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] > 4400:
+                sprite.body.position = pymunk.Vec2d(-4400, self.player.body.position[1])
                 # sprite.body.position = pymunk.Vec2d(100, 100)
                 # print("Sprite out of bounds")
-            if sprite.shape.name == "Pymunk" and sprite.body.position[0] < -3400:
-                sprite.body.position = pymunk.Vec2d(3400, int((SCREEN_HEIGHT / 4)))
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] < -4400:
+                sprite.body.position = pymunk.Vec2d(4400, self.player.body.position[1])
                 # sprite.body.position = pymunk.Vec2d(100, 100)
                 # print("Sprite out of bounds")
             if sprite.shape.name == "Pymunk" and sprite.body.position[1] < 0:

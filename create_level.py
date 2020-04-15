@@ -19,7 +19,7 @@ from k8s_kill_pod import count_pods
 def create_floor(space, sprite_list):
     """ Create a bunch of blocks for the floor. """
     # Layer of grass
-    for x in range(-4400, 4400, constants.SPRITE_SIZE):
+    for x in range(-5400, 5400, constants.SPRITE_SIZE):
         # y = constants.SPRITE_SIZE / 2
         # sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         # sprite_list.append(sprite)
@@ -34,19 +34,19 @@ def create_floor(space, sprite_list):
     ypos = constants.SPRITE_SIZE / 2 - 4
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
     body.position = pymunk.Vec2d(xpos, ypos)
-    shape = pymunk.Poly.create_box(body, (8800, constants.SPRITE_SIZE))
+    shape = pymunk.Poly.create_box(body, (10000, constants.SPRITE_SIZE))
     shape.friction = constants.DEFAULT_FRICTION
     space.add(body, shape)
     
     # First layer of dirt
-    for x in range(-4400, 4400, constants.SPRITE_SIZE):
+    for x in range(-5400, 5400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         # space.add(sprite.body, sprite.shape)
     
     # Extra layer of dirt
-    for x in range(-4400, 4400, constants.SPRITE_SIZE):
+    for x in range(-5400, 5400, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
