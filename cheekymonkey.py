@@ -234,12 +234,14 @@ class MyGame(arcade.Window):
         changed = False
 
         # Scroll left
+        # if self.player.position[0] > -constants.WORLD_SIZE + VIEWPORT_MARGIN: # Only scroll left if not near edge of world
         left_bndry = self.view_left + VIEWPORT_MARGIN
         if self.player.left < left_bndry:
             self.view_left -= left_bndry - self.player.left
             changed = True
 
         # Scroll right
+        # if self.player.position[0] < constants.WORLD_SIZE - VIEWPORT_MARGIN: # Only scroll right if not near edge of world
         right_bndry = self.view_left + SCREEN_WIDTH - VIEWPORT_MARGIN
         if self.player.right > right_bndry:
             self.view_left += self.player.right - right_bndry
@@ -418,19 +420,18 @@ class MyGame(arcade.Window):
     def check_teleport(self):
         ''' See if we need to warp back to start of level '''
         # print(self.player.position)
-        if self.player.position[0] > 4400: # Need to teleport player
-            self.player.body.position = pymunk.Vec2d(-4400, self.player.body.position[1])
-        if self.player.position[0] < -4400: # Need to teleport player
-            self.player.body.position = pymunk.Vec2d(4400, self.player.body.position[1])
+        if self.player.position[0] > constants.WORLD_SIZE: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(-constants.WORLD_SIZE, self.player.body.position[1])
+        if self.player.position[0] < -constants.WORLD_SIZE: # Need to teleport player
+            self.player.body.position = pymunk.Vec2d(constants.WORLD_SIZE, self.player.body.position[1])
 
+        # Check if crates need warping
         for sprite in self.dynamic_sprite_list:
-            if sprite.shape.name == "Pymunk" and sprite.body.position[0] > 4400:
-                sprite.body.position = pymunk.Vec2d(-4400, self.player.body.position[1])
-                # sprite.body.position = pymunk.Vec2d(100, 100)
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] > constants.WORLD_SIZE:
+                sprite.body.position = pymunk.Vec2d(-constants.WORLD_SIZE, self.player.body.position[1])
                 # print("Sprite out of bounds")
-            if sprite.shape.name == "Pymunk" and sprite.body.position[0] < -4400:
-                sprite.body.position = pymunk.Vec2d(4400, self.player.body.position[1])
-                # sprite.body.position = pymunk.Vec2d(100, 100)
+            if sprite.shape.name == "Pymunk" and sprite.body.position[0] < -constants.WORLD_SIZE:
+                sprite.body.position = pymunk.Vec2d(constants.WORLD_SIZE, self.player.body.position[1])
                 # print("Sprite out of bounds")
             if sprite.shape.name == "Pymunk" and sprite.body.position[1] < 0:
                 # print("sprite fell off world, removing")
