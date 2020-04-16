@@ -151,6 +151,10 @@ class MyGame(arcade.Window):
         self.ball_sprite_list.draw()
         self.fg_sprite_list.draw(filter=GL_NEAREST)
 
+        # Testing shapes
+        # arcade.draw_polygon_filled((  (80, 60), (80, 0), (20, 0)), arcade.color.RED)
+        # arcade.draw_polygon_filled((  (20, 120), (20, 60), (80, 60)), arcade.color.RED)
+
         # Draw emitters
         for e in self.emitters:
             e.draw()

@@ -20,35 +20,33 @@ def create_floor(space, sprite_list):
     """ Create a bunch of blocks for the floor. """
     # Layer of grass
     for x in range(-constants.MAP_SIZE, constants.MAP_SIZE, constants.SPRITE_SIZE):
-        # y = constants.SPRITE_SIZE / 2
-        # sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
-        # sprite_list.append(sprite)
-        # space.add(sprite.body, sprite.shape)
-        sprite = arcade.Sprite("./images/tiles/grassMid.png", 0.5)
-        sprite.center_y = constants.SPRITE_SIZE / 2
+        sprite = arcade.Sprite("./images/tiles/grassMid.png", constants.SPRITE_SCALING)
+        sprite.center_y = 0
         sprite.center_x = x
         sprite_list.append(sprite)
+        # print(sprite.center_y)
 
     # Create one big rectangle as the floor physic body, instead of one per tile
     xpos = constants.SCREEN_WIDTH / 2
-    ypos = constants.SPRITE_SIZE / 2 - 4
+    ypos = 0
     body = pymunk.Body(body_type=pymunk.Body.STATIC)
     body.position = pymunk.Vec2d(xpos, ypos)
     shape = pymunk.Poly.create_box(body, (constants.MAP_SIZE * 2, constants.SPRITE_SIZE))
+
     shape.friction = constants.DEFAULT_FRICTION
     space.add(body, shape)
     
     # First layer of dirt
     for x in range(-constants.MAP_SIZE, constants.MAP_SIZE, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
-        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
+        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         # space.add(sprite.body, sprite.shape)
     
     # Extra layer of dirt
     for x in range(-constants.MAP_SIZE, constants.MAP_SIZE, constants.SPRITE_SIZE):
         y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
-        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
+        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         # space.add(sprite.body, sprite.shape)
 
@@ -75,6 +73,45 @@ def create_platform(space, sprite_list, start_x, y, count):
         sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=0.5, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
+
+def create_hill(space, sprite_list, start_x, y, count):
+    """ Create a hill """
+    # Left edge
+    sprite = PymunkSprite("./images/tiles/grassHill_right.png", start_x - constants.SPRITE_SIZE, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
+    t = pymunk.Transform(tx=-60, ty=-96)
+    sprite.shape = pymunk.Poly(sprite.body, [(80, 120), (80, 60), (20, 60)], transform=t)
+    sprite.shape.friction = constants.DEFAULT_FRICTION / 4
+    sprite_list.append(sprite)
+    space.add(sprite.body, sprite.shape)
+    # Add dirt under
+    dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
+    sprite = arcade.Sprite("./images/tiles/grassCorner_right.png", center_x=start_x - constants.SPRITE_SIZE, center_y=dirt_y, scale=constants.SPRITE_SCALING)
+    sprite_list.append(sprite)
+
+    # Middle
+    for x in range(start_x, start_x + count * constants.SPRITE_SIZE + 1, constants.SPRITE_SIZE):
+        sprite = PymunkSprite("./images/tiles/grassMid.png", x, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
+        sprite_list.append(sprite)
+        space.add(sprite.body, sprite.shape)
+        # Add dirt under
+        dirt_y = constants.SPRITE_SIZE / 2
+        # sprite = arcade.Sprite("./images/tiles/grassCorner_right.png", center_x=start_x, center_y=dirt_y, scale=constants.SPRITE_SCALING)
+        # sprite_list.append(sprite)
+        sprite = arcade.Sprite("./images/tiles/grassCenter.png", center_x=x, center_y=dirt_y, scale=constants.SPRITE_SCALING)
+        sprite.center_y = constants.SPRITE_SIZE / 2
+        sprite_list.append(sprite)
+
+    # Right edge
+    sprite = PymunkSprite("./images/tiles/grassHill_left.png", start_x + constants.SPRITE_SIZE * count + constants.SPRITE_SIZE, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
+    sprite.shape.friction = constants.DEFAULT_FRICTION / 4
+    t = pymunk.Transform(tx=-60, ty=-96)
+    sprite.shape = pymunk.Poly(sprite.body, [(20, 120), (20, 60), (80, 60)], transform=t)
+    sprite_list.append(sprite)
+    space.add(sprite.body, sprite.shape)
+    # Add dirt under
+    dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
+    sprite = arcade.Sprite("./images/tiles/grassCorner_left.png", center_x=start_x + constants.SPRITE_SIZE * count + constants.SPRITE_SIZE, center_y=dirt_y, scale=constants.SPRITE_SCALING)
+    sprite_list.append(sprite)    
 
 def decorate_cactus(sprite_list, start_x, y, count):
     """ Create a cactus """
@@ -195,6 +232,11 @@ def decorate_clouds(sprite_list, count):
 def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_list, fg_sprite_list):
     """ Create level one. """
     create_floor(space, static_sprite_list)
+
+    # Add hills
+    create_hill(space, static_sprite_list, -constants.SPRITE_SIZE * 40, constants.SPRITE_SIZE, 3)
+    create_hill(space, static_sprite_list, constants.SPRITE_SIZE * 34, constants.SPRITE_SIZE, 4)
+
     # create_walls(space, static_sprite_list)
     create_platform(space, static_sprite_list, 200, constants.SPRITE_SIZE * 3, 3)
     create_platform(space, static_sprite_list, 500, constants.SPRITE_SIZE * 6, 3)
@@ -220,12 +262,12 @@ def create_level_1(space, static_sprite_list, dynamic_sprite_list, bg_sprite_lis
     create_platform(space, static_sprite_list, 2300, constants.SPRITE_SIZE * 10, 1)
 
     # Add decorations
-    decorate_cactus(bg_sprite_list, 0, 96, 12) # Cacti along ground
-    decorate_cactus_large(bg_sprite_list, 0, 127, 4)
-    decorate_cactus_tiny(bg_sprite_list, 0, 76, 4)
-    decorate_grass(bg_sprite_list, 0, 95, 20)
-    decorate_rock(fg_sprite_list, 0, 92, 3)
-    decorate_rock_small(bg_sprite_list, 0, 73, 10)
+    decorate_cactus(bg_sprite_list, 0, constants.SPRITE_SIZE, 12) # Cacti along ground
+    decorate_cactus_large(bg_sprite_list, 0, constants.SPRITE_SIZE + 30 , 4)
+    decorate_cactus_tiny(bg_sprite_list, 0, constants.SPRITE_SIZE - 20, 4)
+    decorate_grass(bg_sprite_list, 0, constants.SPRITE_SIZE, 20)
+    decorate_rock(fg_sprite_list, 0, constants.SPRITE_SIZE, 3)
+    decorate_rock_small(bg_sprite_list, 0, constants.SPRITE_SIZE - 20, 10)
     decorate_clouds(bg_sprite_list, 20)
 
     # Create the stacks of boxes based on number of running pods or create random ones if offline mode

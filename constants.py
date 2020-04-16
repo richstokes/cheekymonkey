@@ -31,11 +31,11 @@ PLAYER_SPEED_LIMIT = 800
 # Grid-size
 SPRITE_SIZE = 64
 
-WORLD_SIZE = 4400 # Size of world
-MAP_SIZE = 5400 # Size of map
+WORLD_SIZE = 4480 # Size of world
+MAP_SIZE = 5760 # Size of map
 
 # How close we get to the edge before scrolling
-VIEWPORT_MARGIN = 128
+VIEWPORT_MARGIN = SPRITE_SIZE * 2
 
 # Player textures
 TEXTURE_LEFT = 0
