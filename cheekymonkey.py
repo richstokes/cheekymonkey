@@ -1,6 +1,7 @@
 import timeit
 import os
 import arcade
+from arcade.examples.frametime_plotter import FrametimePlotter
 from pyglet.gl import GL_NEAREST, GL_LINEAR
 import pymunk
 import logging
@@ -98,6 +99,12 @@ class MyGame(arcade.Window):
         # Holds game state
         self.game_over = False
 
+        # Array for storing emitters
+        self.emitters = []
+        
+        # self.frametime_plotter = FrametimePlotter()
+        # pyglet.clock.schedule_once(self.emitter, 1)
+        
         # Build the level
         create_level_1(self.space, self.static_sprite_list, self.dynamic_sprite_list, self.bg_sprite_list, self.fg_sprite_list)
 
@@ -128,7 +135,6 @@ class MyGame(arcade.Window):
         # This command has to happen before we start drawing
         arcade.start_render()
 
-
         # for sprite in self.dynamic_sprite_list: # Draw hitboxes for debugging
         #     sprite.draw_hit_box(arcade.color.RED, 3)
         # for sprite in self.static_sprite_list:
@@ -144,6 +150,11 @@ class MyGame(arcade.Window):
         self.dynamic_sprite_list.draw(filter=GL_NEAREST)
         self.ball_sprite_list.draw()
         self.fg_sprite_list.draw(filter=GL_NEAREST)
+
+        # Draw emitters
+        for e in self.emitters:
+            e.draw()
+            # print(e.get_count())
 
         # Display game over screen when needed
         if self.game_over:
@@ -166,10 +177,8 @@ class MyGame(arcade.Window):
         # Display timings
         # output = f"Processing time: {self.processing_time:.3f}"
         # arcade.draw_text(output, 20 + self.view_left, SCREEN_HEIGHT - 60 + self.view_bottom, arcade.color.WHITE, 12)
-
         # output = f"Drawing time: {self.draw_time:.3f}"
         # arcade.draw_text(output, 20 + self.view_left, SCREEN_HEIGHT - 80 + self.view_bottom, arcade.color.WHITE, 12)
-
         # Display instructions
         # output = "Use the mouse to move boxes, space to punch, hold G to grab an item to the right."
         # arcade.draw_text(output, 20 + self.view_left, SCREEN_HEIGHT - 40 + self.view_bottom, arcade.color.WHITE, 12)
@@ -319,8 +328,6 @@ class MyGame(arcade.Window):
             #     pass
         elif self.down_pressed and not self.up_pressed:
             # logging.info("Pressed down, not currently doing anything")
-            # self.force = (0, 0)
-            # self.player.shape.friction = PLAYER_FRICTION * 10 # act as a brake?
             pass
 
         if self.left_pressed and not self.right_pressed:
@@ -348,8 +355,6 @@ class MyGame(arcade.Window):
         if self.player.body.velocity[0] <= -PLAYER_SPEED_LIMIT:
             self.force = (500, 0)
 
-        # print(self.force, self.player.shape.friction, self.player.body.velocity) # Debug physics
-
         # If we have force to apply to the player (from hitting the arrow
         # keys), apply it.
         self.player.body.apply_force_at_local_point(self.force, (0, 0))
@@ -372,6 +377,7 @@ class MyGame(arcade.Window):
             #     print(sprite.shape.name)
             if sprite.shape.name == "Pymunk" and sprite.shape.HITCOUNT >= CONTAINER_HEALTH: # Destroy container if hit CONTAINER_HEALTH times
                 # logging.info("Destroying shape %s", sprite.shape)
+                self.emitters.append(explosion(sprite.shape.body.position[0], sprite.shape.body.position[1])) # Make an explosion
                 self.space.remove(sprite.body, sprite.shape)
                 sprite.remove_from_sprite_lists()
                 # print(len(self.space.shapes))
@@ -382,6 +388,16 @@ class MyGame(arcade.Window):
 
         # Check if we need to teleport
         self.check_teleport()
+
+        # Update emitters
+        emitters_to_update = self.emitters.copy()
+        for e in emitters_to_update:
+            e.update()
+
+        # remove emitters that can be reaped
+        to_del = [e for e in emitters_to_update if e.can_reap()]
+        for e in to_del:
+            self.emitters.remove(e)            
 
         # Check for balls that fall off the screen
         for sprite in self.ball_sprite_list:
@@ -444,10 +460,6 @@ class MyGame(arcade.Window):
             P1, P2 = list_pods()
             self.LAST_POD_KILLED = delete_pod(P1, P2)
    
-    # def delayed_remove(self, sprite):        
-    #     time.sleep(2)
-    #     sprite.remove_from_sprite_lists()
-
     def punch(self):
         ''' Punch a crate '''
         # --- Punch left
@@ -543,6 +555,22 @@ class MyGame(arcade.Window):
         elif symbol == arcade.key.G:
             self.let_go()
 
+def explosion(x, y):
+    """ Create an explosion when crate destroyed """
+    e = arcade.Emitter(
+        center_xy=(x, y),
+        emit_controller=arcade.EmitterIntervalWithTime(constants.DEFAULT_EMIT_INTERVAL * 1.25, constants.DEFAULT_EMIT_DURATION / 6),
+        particle_factory=lambda emitter: arcade.LifetimeParticle(
+            filename_or_texture=constants.E_TEXTURE,
+            change_xy=arcade.rand_in_circle((0.0, 0.0), constants.PARTICLE_SPEED_FAST * 6),
+            lifetime=random.uniform(0.05, 1),
+            scale=random.uniform(0.05, 0.3),
+            alpha=random.uniform(64, 150),
+            change_angle=random.uniform(-30, 30),
+            angle=random.uniform(0, 360)
+        )
+    )    
+    return e
 
 def main():
     # Process arguments

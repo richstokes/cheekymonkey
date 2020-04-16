@@ -3,7 +3,7 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
 # How many hits can the containers take before being destroyed?
-CONTAINER_HEALTH = 4
+CONTAINER_HEALTH = 3
 
 # Container multiplication factor
 # Will create (Actual number of running pods * CONTAINER_FACTOR) crates in game. Each crate represents one pod
@@ -52,6 +52,17 @@ TEXTURE_RIGHT_2 = 10
 
 SPRITE_SCALING = 0.5
 SCREEN_TITLE = 'Cheeky Monkey'
+
+# Emitter stuffs
+CENTER_POS = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+DEFAULT_SCALE = 0.3
+DEFAULT_ALPHA = 96
+DEFAULT_PARTICLE_LIFETIME = 3.0
+PARTICLE_SPEED_FAST = 1.0
+PARTICLE_SPEED_SLOW = 0.3
+DEFAULT_EMIT_INTERVAL = 0.003
+DEFAULT_EMIT_DURATION = 1.5
+E_TEXTURE = "./images/misc/boom.png"
 
 # Online/offline selector
 ## Set this via the command line argument: --offline yes
