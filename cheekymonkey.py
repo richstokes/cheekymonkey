@@ -285,7 +285,10 @@ class MyGame(arcade.Window):
         # Keep track of how long this function takes.
         start_time = timeit.default_timer()
         
-        # See if all crates have been destroyed
+        # print(math.fmod(self.frame_count, delta_time))
+        # print(self.frame_count)
+
+        # See if all crates have been destroyed, if so that's game over
         if len(self.dynamic_sprite_list) - 1 <= 0:
             # logging.info("Game Over!")
             self.game_over = True
