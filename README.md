@@ -63,7 +63,7 @@ You can have fun with the physics by using the plus/minus keys to change the pun
 
 ## Credits
 
-- [Monkey character sprites](https://www.gameartguppy.com/shop/monkey-game-character-sprites/ )
 - [Python Arcade Library](https://arcade.academy/index.html)
+- [Monkey character sprites](https://www.gameartguppy.com/shop/monkey-game-character-sprites/ )
 - [CREDITS.md](https://github.com/richstokes/cheekymonkey/blob/master/CREDITS.md)
 
