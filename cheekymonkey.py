@@ -9,6 +9,7 @@ import math
 import time
 import threading
 import argparse
+from signal import signal, SIGINT
 from create_level import create_level_1
 from physics_utility import (
     PymunkSprite,
@@ -22,6 +23,10 @@ from k8s_kill_pod import *
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
+def exit_handler(signal_received, frame):
+    # TODO: Handle cleanup here
+    logging.info('SIGINT or CTRL-C detected. Exiting game.')
+    exit(0)
 
 class PhysicsSprite(arcade.Sprite):
     def __init__(self, pymunk_shape, filename):
@@ -34,7 +39,6 @@ class CircleSprite(PhysicsSprite):
         super().__init__(pymunk_shape, filename)
         self.width = pymunk_shape.radius * 2
         self.height = pymunk_shape.radius * 2
-
 
 class MyGame(arcade.Window):
     """ Main application class. """
@@ -60,6 +64,9 @@ class MyGame(arcade.Window):
 
         # Holds the status message for pods killed
         self.LAST_POD_KILLED = None
+
+    def on_close(self):
+        exit_handler(SIGINT, 0)
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -128,7 +135,7 @@ class MyGame(arcade.Window):
         self.game_over_sound_did_play = False
         # self.intro_sound = arcade.load_sound("./sounds/277441__xtrgamr__tones-of-victory.wav")
         # self.intro_sound_did_play = False
-        
+
     def on_draw(self):
         """ Render the screen. """
         self.frame_count += 1
@@ -603,5 +610,6 @@ def main():
     arcade.run()
 
 if __name__ == "__main__":
+    signal(SIGINT, exit_handler)
     main()
 
