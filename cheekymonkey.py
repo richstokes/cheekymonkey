@@ -25,7 +25,7 @@ logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 def exit_handler(signal_received, frame):
     # TODO: Handle cleanup here
-    logging.info('SIGINT or CTRL-C detected. Exiting game.')
+    logging.info('SIGINT or CTRL-C caught. Exiting game.')
     exit(0)
 
 class PhysicsSprite(arcade.Sprite):
