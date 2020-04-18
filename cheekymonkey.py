@@ -541,6 +541,9 @@ class MyGame(arcade.Window):
         elif symbol == arcade.key.R:
             logging.info("Resetting game")
             self.setup()
+        elif symbol == arcade.key.ESCAPE:
+            logging.info("Closing game")
+            self.close()         
         elif symbol == arcade.key.PLUS or symbol == arcade.key.EQUAL:
             constants.PLAYER_PUNCH_IMPULSE = constants.PLAYER_PUNCH_IMPULSE * 1.1
             logging.info("Increased punch force: %s", constants.PLAYER_PUNCH_IMPULSE)
