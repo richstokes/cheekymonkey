@@ -40,7 +40,7 @@ def list_pods():
             POD_NAMESPACE = ret.items[0].metadata.namespace
             return([POD_TO_KILL, POD_NAMESPACE])
         except Exception as e:
-            logging.error("Unable to list pods: %s" (e))
+            logging.error("Unable to list pods: %s", (e))
             return([0],[0])
 
 
