@@ -33,6 +33,8 @@ Press 'R' to reset the game.
 2. `pip install -r requirements.txt`
 3. `python cheekymonkey.py`
 
+&nbsp;
+
 Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
 
 Note: The game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:
