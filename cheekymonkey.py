@@ -593,7 +593,7 @@ def main():
     # Process arguments
     parser = argparse.ArgumentParser(description='A Chaos Monkey for your Kubernetes cluster!')
     parser.add_argument("--offline", default="no", help="Set to yes to enable offline mode")
-    parser.add_argument('-e','--exclude', nargs='*', help='<Optional> Space-separated list of namespaces to NOT target')
+    parser.add_argument('-e','--exclude', nargs='*', default="", help='<Optional> Space-separated list of namespaces to NOT target')
 
     args = parser.parse_args()
     offline = args.offline
