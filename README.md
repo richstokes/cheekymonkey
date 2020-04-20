@@ -11,6 +11,8 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 
 >CHAOS ENGINEERING IS:
 >"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."
+>
+>This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. That said, over time I may add other disruptive features beyond simply killing pods. Feel free to open an "issue" with any suggestions!
 
 &nbsp;
 
@@ -29,12 +31,12 @@ Press 'R' to reset the game.
 
 1. Clone the repo
 2. `pip install -r requirements.txt`
-3. `python3 cheekymonkey.py`
+3. `python cheekymonkey.py`
 
 Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
 
 Note: The game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:
-`python3 cheekymonkey.py --offline no --exclude kube-system cert-manager`
+`python cheekymonkey.py --offline no --exclude kube-system cert-manager`
 
 
 &nbsp;

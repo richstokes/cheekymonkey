@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import timeit
 import os
 import arcade
