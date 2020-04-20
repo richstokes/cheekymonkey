@@ -32,14 +32,15 @@ def list_pods():
 
             # Select random pod
             # print(ret.items[0].metadata.namespace)
+            random.shuffle(ret.items)
             while ret.items[0].metadata.namespace in constants.EXCLUDES_LIST:
                 logging.info("Pod in excluded namespace, shuffling")
                 random.shuffle(ret.items)
             POD_TO_KILL = ret.items[0].metadata.name
             POD_NAMESPACE = ret.items[0].metadata.namespace
             return([POD_TO_KILL, POD_NAMESPACE])
-        except:
-            logging.error("Unable to list pods")
+        except Exception as e:
+            logging.error("Unable to list pods: %s" (e))
             return([0],[0])
 
 
