@@ -94,7 +94,7 @@ def create_hill(space, sprite_list, start_x, y, count):
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
         # Add dirt under
-        dirt_y = constants.SPRITE_SIZE / 2
+        dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
         # sprite = arcade.Sprite("./images/tiles/grassCorner_right.png", center_x=start_x, center_y=dirt_y, scale=constants.SPRITE_SCALING)
         # sprite_list.append(sprite)
         sprite = arcade.Sprite("./images/tiles/grassCenter.png", center_x=x, center_y=dirt_y, scale=constants.SPRITE_SCALING)
