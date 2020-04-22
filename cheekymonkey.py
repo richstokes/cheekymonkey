@@ -583,7 +583,7 @@ def explosion(x, y):
             change_xy=arcade.rand_in_circle((0.0, 0.0), constants.PARTICLE_SPEED_FAST * 6),
             lifetime=random.uniform(0.05, 1),
             scale=random.uniform(0.05, 0.3),
-            alpha=random.uniform(64, 150),
+            alpha=random.uniform(64, 250),
             change_angle=random.uniform(-30, 30),
             angle=random.uniform(0, 360)
         )
