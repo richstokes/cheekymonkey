@@ -38,17 +38,17 @@ def create_floor(space, sprite_list):
     
     # First layer of dirt
     for x in range(-constants.MAP_SIZE, constants.MAP_SIZE, constants.SPRITE_SIZE):
-        y = constants.SPRITE_SIZE / 2 - constants.SPRITE_SIZE
+        y = -constants.SPRITE_SIZE + 1 
+        # y = constants.SPRITE_SIZE - (constants.SPRITE_SIZE * 2)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
-        # space.add(sprite.body, sprite.shape)
     
     # Extra layer of dirt
     for x in range(-constants.MAP_SIZE, constants.MAP_SIZE, constants.SPRITE_SIZE):
-        y = constants.SPRITE_SIZE / 2 - (constants.SPRITE_SIZE * 2)
+        y = -constants.SPRITE_SIZE - constants.SPRITE_SIZE +1
+        # y = constants.SPRITE_SIZE - (constants.SPRITE_SIZE * 3)
         sprite = PymunkSprite("./images/tiles/grassCenter.png", x, y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
-        # space.add(sprite.body, sprite.shape)
 
 def create_walls(space, sprite_list):
     """ Create side walls """
@@ -84,8 +84,8 @@ def create_hill(space, sprite_list, start_x, y, count):
     sprite_list.append(sprite)
     space.add(sprite.body, sprite.shape)
     # Add dirt under
-    dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
-    sprite = arcade.Sprite("./images/tiles/grassCorner_right.png", center_x=start_x - constants.SPRITE_SIZE, center_y=dirt_y, scale=constants.SPRITE_SCALING)
+    dirt_y = 0
+    sprite = PymunkSprite("./images/tiles/grassCorner_right.png", start_x - constants.SPRITE_SIZE, dirt_y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
     sprite_list.append(sprite)
 
     # Middle
@@ -94,9 +94,8 @@ def create_hill(space, sprite_list, start_x, y, count):
         sprite_list.append(sprite)
         space.add(sprite.body, sprite.shape)
         # Add dirt under
-        dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
-        sprite = arcade.Sprite("./images/tiles/grassCenter.png", center_x=x, center_y=dirt_y, scale=constants.SPRITE_SCALING)
-        sprite.center_y = constants.SPRITE_SIZE / 2
+        dirt_y = 0
+        sprite = PymunkSprite("./images/tiles/grassCenter.png", x, dirt_y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
         sprite_list.append(sprite)
 
     # Right edge
@@ -107,9 +106,9 @@ def create_hill(space, sprite_list, start_x, y, count):
     sprite_list.append(sprite)
     space.add(sprite.body, sprite.shape)
     # Add dirt under
-    dirt_y = constants.SPRITE_SIZE - constants.SPRITE_SIZE
-    sprite = arcade.Sprite("./images/tiles/grassCorner_left.png", center_x=start_x + constants.SPRITE_SIZE * count + constants.SPRITE_SIZE, center_y=dirt_y, scale=constants.SPRITE_SCALING)
-    sprite_list.append(sprite)    
+    dirt_y = 0
+    sprite = PymunkSprite("./images/tiles/grassCorner_left.png", start_x + constants.SPRITE_SIZE * count + constants.SPRITE_SIZE, dirt_y, scale=constants.SPRITE_SCALING, body_type=pymunk.Body.STATIC)
+    sprite_list.append(sprite)
 
 def decorate_cactus(sprite_list, start_x, y, count):
     """ Create a cactus """
