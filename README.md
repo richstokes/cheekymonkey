@@ -41,12 +41,11 @@ eval "$(pyenv init -)"
 pyenv local 3.8.7
 pip install -r requirements.txt
 python ./cheekymonkey.py
-
 ```
 
 &nbsp;
 
-Unless offline mode is set (see below), the game will attempt to connect to your currently set Kubernetes context.  
+Unless offline mode is set (see below), the game will attempt to connect to your currentt Kubernetes context.  
 
 Note: The game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:  
 `python cheekymonkey.py --exclude kube-system cert-manager`
