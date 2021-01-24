@@ -16,4 +16,4 @@ pyglet == 1.5.3
 # cheekymonkey/create_level.py: 4
 # cheekymonkey/physics_utility.py: 8
 # cheekymonkey/player_utility.py: 28
-pymunk == 5.6.0
+pymunk == 6.0.0
