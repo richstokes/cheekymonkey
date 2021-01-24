@@ -10,9 +10,9 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 &nbsp;
 
 >CHAOS ENGINEERING IS:
->"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."
->
->This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. That said, over time I may add other disruptive features beyond simply killing pods. Feel free to open an "issue" with any suggestions!
+>"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."  
+
+This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. That said, over time I may add other disruptive features beyond simply killing pods. Feel free to open an "issue" with any suggestions!
 
 &nbsp;
 
@@ -31,7 +31,18 @@ Press 'R' to reset the game.
 
 1. Clone the repo
 2. `pip install -r requirements.txt`
-3. `python cheekymonkey.py`
+3. `python cheekymonkey.py`  
+
+Or with `pyenv` (recommended):  
+
+```
+pyenv install 3.8.7
+eval "$(pyenv init -)"
+pyenv local 3.8.7
+pip install -r requirements.txt
+python ./cheekymonkey.py
+
+```
 
 &nbsp;
 

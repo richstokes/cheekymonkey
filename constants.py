@@ -10,7 +10,7 @@ CONTAINER_HEALTH = 3
 CONTAINER_FACTOR = 1
 
 # How many containers to spawn in offline mode
-OFFLINE_CRATE_COUNT = 15
+OFFLINE_CRATE_COUNT = 30
 
 # Default friction used for sprites, unless otherwise specified
 DEFAULT_FRICTION = 0.4

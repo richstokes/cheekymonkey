@@ -2,7 +2,8 @@
 import timeit
 import os
 import arcade
-from arcade.examples.frametime_plotter import FrametimePlotter
+# from arcade.examples.frametime_plotter import FrametimePlotter
+# from arcade import FrametimePlotter
 from pyglet.gl import GL_NEAREST, GL_LINEAR
 import pymunk
 import logging
@@ -80,7 +81,8 @@ class MyGame(arcade.Window):
         self.grab_joint = None
 
         # Lists of sprites
-        self.dynamic_sprite_list = arcade.SpriteList[PymunkSprite]()
+        # self.dynamic_sprite_list = arcade.SpriteList[PymunkSprite]()
+        self.dynamic_sprite_list = arcade.SpriteList() # I dont know why, but this had to change from the above line
         self.static_sprite_list = arcade.SpriteList()
         self.static_sprite_list.is_static = True
         self.bg_sprite_list = arcade.SpriteList()
