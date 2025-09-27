@@ -2,6 +2,7 @@
 import timeit
 import os
 import arcade
+import random
 
 # from arcade.examples.frametime_plotter import FrametimePlotter
 # from arcade import FrametimePlotter
@@ -123,8 +124,8 @@ class MyGame(arcade.Window):
         # Holds game state
         self.game_over = False
 
-        # Array for storing emitters
-        self.emitters = []
+        # Sprite list for explosion particles
+        self.explosions_list = arcade.SpriteList()
 
         # self.frametime_plotter = FrametimePlotter()
         # pyglet.clock.schedule_once(self.emitter, 1)
@@ -199,9 +200,8 @@ class MyGame(arcade.Window):
         # arcade.draw_polygon_filled((  (80, 60), (80, 0), (20, 0)), arcade.color.RED)
         # arcade.draw_polygon_filled((  (20, 120), (20, 60), (80, 60)), arcade.color.RED)
 
-        # Draw emitters
-        for e in self.emitters:
-            e.draw()
+        # Draw explosion particles
+        self.explosions_list.draw()
             # print(e.get_count())
 
         # Display game over screen when needed
@@ -477,10 +477,8 @@ class MyGame(arcade.Window):
                 and sprite.shape.HITCOUNT >= CONTAINER_HEALTH
             ):  # Destroy container if hit CONTAINER_HEALTH times
                 # logging.info("Destroying shape %s", sprite.shape)
-                self.emitters.append(
-                    explosion(
-                        sprite.shape.body.position[0], sprite.shape.body.position[1]
-                    )
+                explosion(
+                    sprite.shape.body.position[0], sprite.shape.body.position[1], self.explosions_list
                 )  # Make an explosion
                 self.space.remove(sprite.body, sprite.shape)
                 sprite.remove_from_sprite_lists()
@@ -493,15 +491,8 @@ class MyGame(arcade.Window):
         # Check if we need to teleport
         self.check_teleport()
 
-        # Update emitters
-        emitters_to_update = self.emitters.copy()
-        for e in emitters_to_update:
-            e.update()
-
-        # remove emitters that can be reaped
-        to_del = [e for e in emitters_to_update if e.can_reap()]
-        for e in to_del:
-            self.emitters.remove(e)
+        # Update explosion particles
+        self.explosions_list.update()
 
         # Check for balls that fall off the screen
         for sprite in self.ball_sprite_list:
@@ -681,26 +672,60 @@ class MyGame(arcade.Window):
             self.let_go()
 
 
-def explosion(x, y):
+# --- Explosion Particle Classes ---
+
+# Particle constants
+PARTICLE_FADE_RATE = 8
+PARTICLE_MIN_SPEED = 2.5
+PARTICLE_SPEED_RANGE = 2.5
+PARTICLE_COUNT = 15
+PARTICLE_RADIUS = 3
+PARTICLE_COLORS = [arcade.color.ALIZARIN_CRIMSON,
+                   arcade.color.COQUELICOT,
+                   arcade.color.LAVA,
+                   arcade.color.KU_CRIMSON,
+                   arcade.color.DARK_TANGERINE,
+                   arcade.color.ORANGE,
+                   arcade.color.YELLOW]
+
+
+class Particle(arcade.SpriteCircle):
+    """ Explosion particle"""
+    def __init__(self):
+        """
+        Simple particle sprite based on circle sprite.
+        """
+        # Make the particle
+        super().__init__(PARTICLE_RADIUS, random.choice(PARTICLE_COLORS))
+
+        # Set direction/speed
+        speed = random.random() * PARTICLE_SPEED_RANGE + PARTICLE_MIN_SPEED
+        direction = random.randrange(360)
+        self.change_x = math.sin(math.radians(direction)) * speed
+        self.change_y = math.cos(math.radians(direction)) * speed
+
+    def update(self, delta_time: float = 1 / 60):
+        """Update the particle"""
+        # Take delta_time into account
+        time_step = 60 * delta_time
+
+        if self.alpha <= 0:
+            # Faded out, remove
+            self.remove_from_sprite_lists()
+        else:
+            # Gradually fade out the particle. Don't go below 0
+            self.alpha = max(0, self.alpha - PARTICLE_FADE_RATE * time_step)
+            # Move the particle
+            self.center_x += self.change_x * time_step
+            self.center_y += self.change_y * time_step
+
+
+def explosion(x, y, explosions_list):
     """Create an explosion when crate destroyed"""
-    e = arcade.Emitter(
-        center_xy=(x, y),
-        emit_controller=arcade.EmitterIntervalWithTime(
-            constants.DEFAULT_EMIT_INTERVAL * 1.25, constants.DEFAULT_EMIT_DURATION / 6
-        ),
-        particle_factory=lambda emitter: arcade.LifetimeParticle(
-            filename_or_texture=constants.E_TEXTURE,
-            change_xy=arcade.rand_in_circle(
-                (0.0, 0.0), constants.PARTICLE_SPEED_FAST * 6
-            ),
-            lifetime=random.uniform(0.05, 1),
-            scale=random.uniform(0.05, 0.3),
-            alpha=random.uniform(64, 250),
-            change_angle=random.uniform(-30, 30),
-            angle=random.uniform(0, 360),
-        ),
-    )
-    return e
+    for i in range(PARTICLE_COUNT):
+        particle = Particle()
+        particle.position = (x, y)
+        explosions_list.append(particle)
 
 
 def main():
