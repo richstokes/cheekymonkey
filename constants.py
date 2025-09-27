@@ -3,7 +3,7 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 
 # How many hits can the containers take before being destroyed?
-CONTAINER_HEALTH = 1
+CONTAINER_HEALTH = 2
 
 # Container multiplication factor
 # Will create (Actual number of running pods * CONTAINER_FACTOR) crates in game. Each crate represents one pod

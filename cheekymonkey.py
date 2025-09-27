@@ -212,7 +212,7 @@ class MyGame(arcade.Window):
                 self.view_bottom + SCREEN_HEIGHT / 2,
                 arcade.color.BLACK,
                 100,
-                font_name=["Impact", "Courier", "Helvetica"],
+                font_name=("Impact", "Courier", "Helvetica"),
             )
 
         # Once per split second
@@ -253,7 +253,7 @@ class MyGame(arcade.Window):
                 SCREEN_HEIGHT - 20 + self.view_bottom,
                 arcade.color.WHITE,
                 12,
-                font_name=["Helvetica"],
+                font_name="Helvetica",
             )
 
         self.draw_time = timeit.default_timer() - draw_start_time
