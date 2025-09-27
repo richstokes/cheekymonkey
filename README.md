@@ -2,19 +2,14 @@
 
 Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.
 
-&nbsp;
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/richstokes/cheekymonkey/master/images/intro.gif" width="65%">
 </p>
-&nbsp;
 
 >CHAOS ENGINEERING IS:
 >"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."  
 
-This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. You probably don't want to run this in production.
-
-&nbsp;
+This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. You _probably_ don't want to run this in production.
 
 ## How to play
 
@@ -24,9 +19,7 @@ You control the monkey with the arrow keys, and punch crates with space bar. You
 
 Every time the monkey destroys a crate, a pod in your cluster is randomly selected and deleted!
 
-Press 'R' to reset the game.  
-
-&nbsp;
+Press 'R' to reset the game.
 
 ## Install & run
 
@@ -36,21 +29,16 @@ Press 'R' to reset the game.
 2. Install dependencies: `pipenv install`
 3. Run the game: `pipenv run python cheekymonkey.py`
 
-&nbsp;
-
 Unless offline mode is set (see below), the game will attempt to connect to your currently-set Kubernetes context.
 
-Note: By default, the game will target pods across ALL namespaces, unless you specify namespaces to *exclude*, for example:  
-`pipenv run python cheekymonkey.py --exclude kube-system cert-manager`
+By default, the game will target pods across ALL namespaces, unless you specify namespaces to _exclude_, for example:  
 
-&nbsp;
+`pipenv run python cheekymonkey.py --exclude kube-system cert-manager`
 
 ### Command line Options
 
 `--offline yes`  Switches to offline mode, no pods will be harmed  
 `--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude  
-
-&nbsp;
 
 ### Other settings
 
@@ -62,8 +50,6 @@ Change the following in `constants.py`:
 - `OFFLINE_CRATE_COUNT` - How many crates to spawn in offline mode (Multiplied by `CONTAINER_FACTOR`)  
 
 You can have fun with the physics by using the plus/minus keys to change the punching force.  
-
-&nbsp;
 
 ## Credits
 
