@@ -1,6 +1,6 @@
 ## Cheeky Monkey
 
-Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.   
+Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.
 
 &nbsp;
 
@@ -24,32 +24,23 @@ Every time the monkey destroys a crate, a pod in your cluster is randomly select
 
 Press 'R' to reset the game.  
 
-
 &nbsp;
 
 ### Install & run
 
+#### Using pipenv (recommended)
+
 1. Clone the repo
-2. `pip install -r requirements.txt`
-3. `python cheekymonkey.py`  
-
-Or with `pyenv` (recommended):  
-
-```
-pyenv install 3.8.7
-eval "$(pyenv init -)"
-pyenv local 3.8.7
-pip install -r requirements.txt
-python ./cheekymonkey.py
-```
+2. Install pipenv: `pip install pipenv`
+3. Install dependencies: `pipenv install`
+4. Run the game: `pipenv run python cheekymonkey.py`
 
 &nbsp;
 
-Unless offline mode is set (see below), the game will attempt to connect to your currentt Kubernetes context.  
+Unless offline mode is set (see below), the game will attempt to connect to your current Kubernetes context.
 
-Note: The game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:  
+Note: By default, the game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:  
 `python cheekymonkey.py --exclude kube-system cert-manager`
-
 
 &nbsp;
 
@@ -57,7 +48,6 @@ Note: The game will target pods across ALL namespaces, unless you specify namesp
 
 `--offline yes`  Switches to offline mode, no pods will be harmed  
 `--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude  
-
 
 &nbsp;
 
@@ -72,7 +62,6 @@ Change the following in `constants.py`:
 
 You can have fun with the physics by using the plus/minus keys to change the punching force.  
 
-
 &nbsp;
 
 ## Credits
@@ -80,4 +69,3 @@ You can have fun with the physics by using the plus/minus keys to change the pun
 - [Python Arcade Library](https://arcade.academy/index.html)
 - [Monkey character sprites](https://www.gameartguppy.com/shop/monkey-game-character-sprites/ )
 - [CREDITS.md](https://github.com/richstokes/cheekymonkey/blob/master/CREDITS.md)
-

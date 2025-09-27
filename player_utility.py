@@ -22,23 +22,26 @@ from constants import (
     TEXTURE_LEFT_4,
     TEXTURE_RIGHT_4,
     SCREEN_HEIGHT,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
 )
 
 import pymunk
 import math
 
+
 class Player(arcade.Sprite):
 
-    def __init__(self,
-                 filename,
-                 center_x=0,
-                 center_y=0,
-                 scale=SPRITE_SCALING,
-                 mass=DEFAULT_MASS * 2,
-                 moment=None,
-                 friction=PLAYER_FRICTION, # seeing if its better to use non-default value
-                 body_type=pymunk.Body.DYNAMIC):
+    def __init__(
+        self,
+        filename,
+        center_x=0,
+        center_y=0,
+        scale=SPRITE_SCALING,
+        mass=DEFAULT_MASS * 2,
+        moment=None,
+        friction=PLAYER_FRICTION,  # seeing if its better to use non-default value
+        body_type=pymunk.Body.DYNAMIC,
+    ):
 
         super().__init__(filename, scale=scale, center_x=center_x, center_y=center_y)
         width = self.texture.width * scale
@@ -50,65 +53,103 @@ class Player(arcade.Sprite):
         self.body = pymunk.Body(mass, moment, body_type=body_type)
         self.body.position = pymunk.Vec2d(center_x, center_y)
 
-        self.shape = pymunk.Poly.create_box(self.body, (width * 0.90, height * 0.90,), radius=0.8) # was 0.8
+        self.shape = pymunk.Poly.create_box(
+            self.body,
+            (
+                width * 0.90,
+                height * 0.90,
+            ),
+            radius=0.8,
+        )  # was 0.8
         self.shape.friction = friction
         self.shape.HITCOUNT = -100
         self.shape.name = "Player"
         self.punching = False
 
-        self.set_hit_box([[-22, -60], [22, -60], [22, 50], [-22, 50]]) 
+        # Set hit box points for collision detection
+        self.points = [[-22, -60], [22, -60], [22, 50], [-22, 50]]
         # self._collision_radius = 0.5
 
         # Load in monkey textures
         try:
             self.textures = []
             # TEXTURE_LEFT
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png"
+            )
             self.textures.append(texture)
             # TEXTURE_RIGHT
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_jump_4.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_armsup.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_faceforward.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_faceforward.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_jump_swing_2.png"
+            )
             self.textures.append(texture)
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_armsup_happy.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_armsup_happy.png"
+            )
             self.textures.append(texture)
             # TEXTURE_LEFT_2
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png"
+            )
             self.textures.append(texture)
             # TEXTURE_RIGHT_2
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png"
+            )
             self.textures.append(texture)
             # TEXTURE_LEFT_3
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png"
+            )
             self.textures.append(texture)
             # TEXTURE_RIGHT_3
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png")
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png"
+            )
             self.textures.append(texture)
             # TEXTURE_LEFT_4
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_4.png", mirrored=True)
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_4.png"
+            )
             self.textures.append(texture)
             # TEXTURE_RIGHT_4
-            texture = arcade.load_texture("./images/Char_Monkey_Free_Images/Animations/monkey_walk_4.png")
-            self.textures.append(texture)            
+            texture = arcade.load_texture(
+                "./images/Char_Monkey_Free_Images/Animations/monkey_walk_4.png"
+            )
+            self.textures.append(texture)
 
-        except:
-            logging.error("Unable to load textures")
+        except Exception as e:
+            logging.error(f"Unable to load textures: {e}")
             quit(1)
 
         self.scale = SPRITE_SCALING
 
     def update(self, FRAME_COUNT):
-        ''' Updates player animations '''
+        """Updates player animations"""
         # If punching
         if self.punching == True and self.body.velocity[0] < 0:
             # print("punched left")
@@ -155,16 +196,17 @@ class Player(arcade.Sprite):
             # return
 
         # Detect jumping
-        if self.body.velocity[1] > 5 and self.body.velocity[0] < 0: # Jumping left
+        if self.body.velocity[1] > 5 and self.body.velocity[0] < 0:  # Jumping left
             # print("left jump")
             self.texture = self.textures[TEXTURE_JUMP_LEFT]
-        elif self.body.velocity[1] > 5 and self.body.velocity[0] > 0: # Jumping right
+        elif self.body.velocity[1] > 5 and self.body.velocity[0] > 0:  # Jumping right
             # print("right jump")
             self.texture = self.textures[TEXTURE_JUMP_RIGHT]
-        elif self.body.velocity[1] > 5 and self.body.velocity[0] == 0: # Jumping straight up
+        elif (
+            self.body.velocity[1] > 5 and self.body.velocity[0] == 0
+        ):  # Jumping straight up
             # print("up jump")
             self.texture = self.textures[TEXTURE_JUMP_UP]
-        elif self.body.velocity[1] < 5 and self.body.velocity[0] == 0: # Falling down
+        elif self.body.velocity[1] < 5 and self.body.velocity[0] == 0:  # Falling down
             self.texture = self.textures[TEXTURE_JUMP_UP]
-            #TODO: Replace with a falling/downward jump texture
- 
+            # TODO: Replace with a falling/downward jump texture
