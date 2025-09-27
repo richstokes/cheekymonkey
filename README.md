@@ -40,7 +40,7 @@ Press 'R' to reset the game.
 Unless offline mode is set (see below), the game will attempt to connect to your current Kubernetes context.
 
 Note: By default, the game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:  
-`python cheekymonkey.py --exclude kube-system cert-manager`
+`pipenv run python cheekymonkey.py --exclude kube-system cert-manager`
 
 &nbsp;
 

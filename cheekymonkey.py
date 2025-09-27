@@ -202,7 +202,7 @@ class MyGame(arcade.Window):
 
         # Draw explosion particles
         self.explosions_list.draw()
-            # print(e.get_count())
+        # print(e.get_count())
 
         # Display game over screen when needed
         if self.game_over:
@@ -478,7 +478,9 @@ class MyGame(arcade.Window):
             ):  # Destroy container if hit CONTAINER_HEALTH times
                 # logging.info("Destroying shape %s", sprite.shape)
                 explosion(
-                    sprite.shape.body.position[0], sprite.shape.body.position[1], self.explosions_list
+                    sprite.shape.body.position[0],
+                    sprite.shape.body.position[1],
+                    self.explosions_list,
                 )  # Make an explosion
                 self.space.remove(sprite.body, sprite.shape)
                 sprite.remove_from_sprite_lists()
@@ -680,17 +682,20 @@ PARTICLE_MIN_SPEED = 2.5
 PARTICLE_SPEED_RANGE = 2.5
 PARTICLE_COUNT = 15
 PARTICLE_RADIUS = 3
-PARTICLE_COLORS = [arcade.color.ALIZARIN_CRIMSON,
-                   arcade.color.COQUELICOT,
-                   arcade.color.LAVA,
-                   arcade.color.KU_CRIMSON,
-                   arcade.color.DARK_TANGERINE,
-                   arcade.color.ORANGE,
-                   arcade.color.YELLOW]
+PARTICLE_COLORS = [
+    arcade.color.ALIZARIN_CRIMSON,
+    arcade.color.COQUELICOT,
+    arcade.color.LAVA,
+    arcade.color.KU_CRIMSON,
+    arcade.color.DARK_TANGERINE,
+    arcade.color.ORANGE,
+    arcade.color.YELLOW,
+]
 
 
 class Particle(arcade.SpriteCircle):
-    """ Explosion particle"""
+    """Explosion particle"""
+
     def __init__(self):
         """
         Simple particle sprite based on circle sprite.
