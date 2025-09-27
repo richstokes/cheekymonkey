@@ -73,7 +73,7 @@ class Player(arcade.Sprite):
         # Load in monkey textures
         try:
             self.textures = []
-            # TEXTURE_LEFT
+            # TEXTURE_LEFT (will be flipped using scale_x)
             texture = arcade.load_texture(
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_1.png"
             )
@@ -111,7 +111,7 @@ class Player(arcade.Sprite):
                 "./images/Char_Monkey_Free_Images/Animations/monkey_armsup_happy.png"
             )
             self.textures.append(texture)
-            # TEXTURE_LEFT_2
+            # TEXTURE_LEFT_2 (will be flipped using scale_x)
             texture = arcade.load_texture(
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png"
             )
@@ -121,7 +121,7 @@ class Player(arcade.Sprite):
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_2.png"
             )
             self.textures.append(texture)
-            # TEXTURE_LEFT_3
+            # TEXTURE_LEFT_3 (will be flipped using scale_x)
             texture = arcade.load_texture(
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png"
             )
@@ -131,7 +131,7 @@ class Player(arcade.Sprite):
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_3.png"
             )
             self.textures.append(texture)
-            # TEXTURE_LEFT_4
+            # TEXTURE_LEFT_4 (will be flipped using scale_x)
             texture = arcade.load_texture(
                 "./images/Char_Monkey_Free_Images/Animations/monkey_walk_4.png"
             )
@@ -155,12 +155,14 @@ class Player(arcade.Sprite):
             # print("punched left")
             # Play punching sound?
             self.texture = self.textures[TEXTURE_PUNCH_LEFT]
+            self.scale_x = -abs(self.scale_x)  # Flip horizontally for left-facing
             # self.punching = False
             return
         elif self.punching == True and self.body.velocity[0] >= 0:
             # print("punched right")
             # Play punching sound?
             self.texture = self.textures[TEXTURE_PUNCH_RIGHT]
+            self.scale_x = abs(self.scale_x)  # Face right (positive scale)
             # self.punching = False
             return
 
@@ -171,6 +173,7 @@ class Player(arcade.Sprite):
                 self.texture = self.textures[TEXTURE_IDLE]
             elif FRAME_COUNT % 15 == 0:
                 self.texture = self.textures[TEXTURE_IDLE_2]
+            # Keep current scale_x for idle animation
             return
 
         # Figure out if we should animate walking left or right
@@ -183,6 +186,7 @@ class Player(arcade.Sprite):
                 self.texture = self.textures[TEXTURE_LEFT_3]
             elif FRAME_COUNT % 15 == 0:
                 self.texture = self.textures[TEXTURE_LEFT_4]
+            self.scale_x = -abs(self.scale_x)  # Flip horizontally for left-facing
             # return
         elif self.body.velocity[0] > 20:
             if FRAME_COUNT % 60 == 0:
@@ -193,20 +197,25 @@ class Player(arcade.Sprite):
                 self.texture = self.textures[TEXTURE_RIGHT_3]
             elif FRAME_COUNT % 15 == 0:
                 self.texture = self.textures[TEXTURE_RIGHT_4]
+            self.scale_x = abs(self.scale_x)  # Face right (positive scale)
             # return
 
         # Detect jumping
         if self.body.velocity[1] > 5 and self.body.velocity[0] < 0:  # Jumping left
             # print("left jump")
             self.texture = self.textures[TEXTURE_JUMP_LEFT]
+            self.scale_x = -abs(self.scale_x)  # Flip horizontally for left-facing
         elif self.body.velocity[1] > 5 and self.body.velocity[0] > 0:  # Jumping right
             # print("right jump")
             self.texture = self.textures[TEXTURE_JUMP_RIGHT]
+            self.scale_x = abs(self.scale_x)  # Face right (positive scale)
         elif (
             self.body.velocity[1] > 5 and self.body.velocity[0] == 0
         ):  # Jumping straight up
             # print("up jump")
             self.texture = self.textures[TEXTURE_JUMP_UP]
+            # Keep current scale_x for straight up jump
         elif self.body.velocity[1] < 5 and self.body.velocity[0] == 0:  # Falling down
             self.texture = self.textures[TEXTURE_JUMP_UP]
+            # Keep current scale_x for falling
             # TODO: Replace with a falling/downward jump texture
