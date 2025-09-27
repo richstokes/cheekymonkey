@@ -1,4 +1,4 @@
-## Cheeky Monkey
+# Cheeky Monkey
 
 Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", this game quite literally sets a monkey loose in your Kubernetes cluster.
 
@@ -12,46 +12,47 @@ Inspired by Netflix's "[Chaos Monkey](https://github.com/Netflix/chaosmonkey)", 
 >CHAOS ENGINEERING IS:
 >"the discipline of experimenting on a distributed system in order to build confidence in the system's capability to withstand turbulent conditions in production."  
 
-This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. That said, over time I may add other disruptive features beyond simply killing pods. Feel free to open an "issue" with any suggestions!
+This game is more for fun and demonstration purposes than to be a genuine chaos engineering tool. You probably don't want to run this in production.
 
 &nbsp;
 
+## How to play
+
 Kubernetes pods are represented by crates in the game. The more pods you have, the more crates are dropped!  
 
-You control the monkey with the arrow keys, and punch crates with spacebar. You can also hold 'G' to grab a crate to your right and drag it around.  
+You control the monkey with the arrow keys, and punch crates with space bar. You can also hold 'G' to grab a crate to your right and drag it around.  
 
-Every time the monkey destroys a crate, a pod in your cluster is randomly selected and deleted.  
+Every time the monkey destroys a crate, a pod in your cluster is randomly selected and deleted!
 
 Press 'R' to reset the game.  
 
 &nbsp;
 
-### Install & run
+## Install & run
 
-#### Using pipenv (recommended)
+### Using pipenv
 
 1. Clone the repo
-2. Install pipenv: `pip install pipenv`
-3. Install dependencies: `pipenv install`
-4. Run the game: `pipenv run python cheekymonkey.py`
+2. Install dependencies: `pipenv install`
+3. Run the game: `pipenv run python cheekymonkey.py`
 
 &nbsp;
 
-Unless offline mode is set (see below), the game will attempt to connect to your current Kubernetes context.
+Unless offline mode is set (see below), the game will attempt to connect to your currently-set Kubernetes context.
 
-Note: By default, the game will target pods across ALL namespaces, unless you specify namespaces to exclude, for example:  
+Note: By default, the game will target pods across ALL namespaces, unless you specify namespaces to *exclude*, for example:  
 `pipenv run python cheekymonkey.py --exclude kube-system cert-manager`
 
 &nbsp;
 
-#### Command line Options
+### Command line Options
 
 `--offline yes`  Switches to offline mode, no pods will be harmed  
 `--exclude <namespace1> <namespace2>`  Space-separated list of namespaces to exclude  
 
 &nbsp;
 
-#### Other settings
+### Other settings
 
 Change the following in `constants.py`:
 
